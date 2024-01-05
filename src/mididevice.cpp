@@ -158,7 +158,7 @@ void CMIDIDevice::MIDIMessageHandler (const u8 *pMessage, size_t nLength, unsign
 		Iterator = s_DeviceMap.find (m_pConfig->GetMIDIThruOut ());
 		if (Iterator != s_DeviceMap.end ())
 		{
-			Iterator->second->Send (pMessage, nLength, nCable);
+			//Iterator->second->Send (pMessage, nLength, nCable);
 		}
 	}
 

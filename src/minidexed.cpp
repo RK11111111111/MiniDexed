@@ -1533,7 +1533,7 @@ bool CMiniDexed::DoSetNewPerformance (void)
 		//Here reset usb device
 		for (unsigned i = 0; i < CConfig::MaxUSBMIDIDevices; i++)
 	{
-		m_pMIDIKeyboard[i] = new CMIDIKeyboard (this, pConfig, &m_UI, i);
+		m_pMIDIKeyboard[i] = new CMIDIKeyboard (this, m_pConfig, &m_UI, i);
 		assert (m_pMIDIKeyboard[i]);
 	}
 		

@@ -73,7 +73,7 @@ void CMIDIKeyboard::Process (boolean bPlugAndPlayUpdated)
 	{
 		return;
 	}
-
+	//RK Set m_pMIDIDevice zero to force reregister.
 	if (m_pMIDIDevice == 0)
 	{
 		m_pMIDIDevice =

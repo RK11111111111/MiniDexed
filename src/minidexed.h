@@ -275,7 +275,7 @@ private:
 	CUserInterface m_UI;
 	CSysExFileLoader m_SysExFileLoader;
 	CPerformanceConfig m_PerformanceConfig;
-	char unused_buffer_bad_a[1024]
+	char unused_buffer_bad_a[1024];
 
 	CMIDIKeyboard *m_pMIDIKeyboard[CConfig::MaxUSBMIDIDevices];
 	//CPCKeyboard m_PCKeyboard;

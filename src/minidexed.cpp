@@ -39,8 +39,8 @@ CMiniDexed::CMiniDexed (CConfig *pConfig, CInterruptSystem *pInterrupt,
 	m_pConfig (pConfig),
 	m_UI (this, pGPIOManager, pI2CMaster, pConfig),
 	m_PerformanceConfig (pFileSystem),
-	m_PCKeyboard (this, pConfig, &m_UI),
-	m_SerialMIDI (this, pInterrupt, pConfig, &m_UI),
+	//m_PCKeyboard (this, pConfig, &m_UI),
+	//m_SerialMIDI (this, pInterrupt, pConfig, &m_UI),
 	m_bUseSerial (false),
 	m_pSoundDevice (0),
 	m_bChannelsSwapped (pConfig->GetChannelsSwapped ()),
@@ -184,12 +184,12 @@ bool CMiniDexed::Initialize (void)
 
 	m_SysExFileLoader.Load (m_pConfig->GetHeaderlessSysExVoices ());
 
-	if (m_SerialMIDI.Initialize ())
-	{
-		LOGNOTE ("Serial MIDI interface enabled");
+	//if (m_SerialMIDI.Initialize ())
+	//{
+	//	LOGNOTE ("Serial MIDI interface enabled");
 
-		m_bUseSerial = true;
-	}
+	//	m_bUseSerial = true;
+	//}
 	
 	if (m_pConfig->GetMIDIRXProgramChange())
 	{
@@ -283,11 +283,11 @@ void CMiniDexed::Process (bool bPlugAndPlayUpdated)
 		m_pMIDIKeyboard[i]->Process (bPlugAndPlayUpdated);
 	}
 
-	m_PCKeyboard.Process (bPlugAndPlayUpdated);
+	//m_PCKeyboard.Process (bPlugAndPlayUpdated);
 
 	if (m_bUseSerial)
 	{
-		m_SerialMIDI.Process ();
+		//m_SerialMIDI.Process ();
 	}
 
 	m_UI.Process ();
@@ -477,7 +477,7 @@ void CMiniDexed::ProgramChange (unsigned nProgram, unsigned nTG)
 		// MIDI channel configured for this TG
 		if (m_nMIDIChannel[nTG] < CMIDIDevice::Channels)
 		{
-			m_SerialMIDI.SendSystemExclusiveVoice(nProgram,0,nTG);
+		//	m_SerialMIDI.SendSystemExclusiveVoice(nProgram,0,nTG);
 		}
 	}
 
@@ -592,11 +592,11 @@ void CMiniDexed::SetMIDIChannel (uint8_t uchChannel, unsigned nTG)
 		m_pMIDIKeyboard[i]->SetChannel (uchChannel, nTG);
 	}
 
-	m_PCKeyboard.SetChannel (uchChannel, nTG);
+	//m_PCKeyboard.SetChannel (uchChannel, nTG);
 
 	if (m_bUseSerial)
 	{
-		m_SerialMIDI.SetChannel (uchChannel, nTG);
+	//	m_SerialMIDI.SetChannel (uchChannel, nTG);
 	}
 
 #ifdef ARM_ALLOW_MULTI_CORE

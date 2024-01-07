@@ -1530,6 +1530,15 @@ bool CMiniDexed::DoSetNewPerformance (void)
 	{
 		LoadPerformanceParameters();
 		m_bLoadPerformanceBusy = false;
+		//Here reset usb device
+		for (unsigned i = 0; i < CConfig::MaxUSBMIDIDevices; i++)
+	{
+		m_pMIDIKeyboard[i] = new CMIDIKeyboard (this, pConfig, &m_UI, i);
+		assert (m_pMIDIKeyboard[i]);
+	}
+		
+		//Done
+		
 		return true;
 	}
 	else

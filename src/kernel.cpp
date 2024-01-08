@@ -102,7 +102,7 @@ CStdlibApp::TShutdownMode CKernel::Run (void)
 	{
 		boolean bUpdated = m_pUSB->UpdatePlugAndPlay ();
         //pass m_pUSB
-		m_pDexed->Process(bUpdated,m_USB);
+		m_pDexed->Process(bUpdated,m_pUSB);
 
 		if (mbScreenAvailable)
 		{

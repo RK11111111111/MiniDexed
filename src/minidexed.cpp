@@ -23,6 +23,7 @@
 #include <circle/sound/pwmsoundbasedevice.h>
 #include <circle/sound/i2ssoundbasedevice.h>
 #include <circle/sound/hdmisoundbasedevice.h>
+#include <circle/usb/usbhcidevice.h>//RK111 reset
 #include <circle/gpiopin.h>
 #include <string.h>
 #include <stdio.h>
@@ -271,7 +272,7 @@ bool CMiniDexed::Initialize (void)
 	return true;
 }
 
-void CMiniDexed::Process (bool bPlugAndPlayUpdated)
+void CMiniDexed::Process (bool bPlugAndPlayUpdated,CUSBController *m_pUSB)
 {
 #ifndef ARM_ALLOW_MULTI_CORE
 	ProcessSound ();
@@ -312,6 +313,8 @@ void CMiniDexed::Process (bool bPlugAndPlayUpdated)
 		{
 			m_bSetNewPerformance = false;
 		}
+		//reset USB
+		m_pUSB->ReScanDevices();
 		
 	}
 	
@@ -1529,16 +1532,7 @@ bool CMiniDexed::DoSetNewPerformance (void)
 	if (m_PerformanceConfig.Load ())
 	{
 		LoadPerformanceParameters();
-		m_bLoadPerformanceBusy = false;
-		//Here reset usb device
-		for (unsigned i = 0; i < CConfig::MaxUSBMIDIDevices; i++)
-	{
-		m_pMIDIKeyboard[i] = new CMIDIKeyboard (this, m_pConfig, &m_UI, i);
-		assert (m_pMIDIKeyboard[i]);
-	}
-		
-		//Done
-		
+		m_bLoadPerformanceBusy = false;	
 		return true;
 	}
 	else

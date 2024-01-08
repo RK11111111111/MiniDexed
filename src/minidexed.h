@@ -43,6 +43,7 @@
 #include "effect_mixer.hpp"
 #include "effect_platervbstereo.h"
 #include "effect_compressor.h"
+#include <circle/usb/usbhcidevice.h>
 
 class CMiniDexed
 #ifdef ARM_ALLOW_MULTI_CORE
@@ -55,7 +56,7 @@ public:
 
 	bool Initialize (void);
 
-	void Process (bool bPlugAndPlayUpdated);
+	void Process (bool bPlugAndPlayUpdated, CUSBController *m_pUSB);
 
 #ifdef ARM_ALLOW_MULTI_CORE
 	void Run (unsigned nCore);

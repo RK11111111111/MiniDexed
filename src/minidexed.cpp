@@ -314,8 +314,8 @@ void CMiniDexed::Process (bool bPlugAndPlayUpdated,CUSBController *m_pUSB)
 			m_bSetNewPerformance = false;
 		}
 		//reset USB
-		m_pUSB->ReScanDevices();
-		
+		//m_pUSB->ReScanDevices();
+		m_pUSB->Initialize ()
 	}
 	
 	if(m_bDeletePerformance)

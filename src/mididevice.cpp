@@ -79,7 +79,10 @@ CMIDIDevice::~CMIDIDevice (void)
 void CMIDIDevice::SetChannel (u8 ucChannel, unsigned nTG)
 {
 	assert (nTG < CConfig::ToneGenerators);
-	m_ChannelMap[nTG] = nTG;//ucChannel;
+	for (unsigned nTG = 0; nTG < CConfig::ToneGenerators; nTG++)
+	{
+		m_ChannelMap[nTG] = nTG;
+	}
 }
 
 u8 CMIDIDevice::GetChannel (unsigned nTG) const
@@ -158,7 +161,7 @@ void CMIDIDevice::MIDIMessageHandler (const u8 *pMessage, size_t nLength, unsign
 		Iterator = s_DeviceMap.find (m_pConfig->GetMIDIThruOut ());
 		if (Iterator != s_DeviceMap.end ())
 		{
-			//Iterator->second->Send (pMessage, nLength, nCable);
+			Iterator->second->Send (pMessage, nLength, nCable);
 		}
 	}
 
@@ -525,14 +528,14 @@ void CMIDIDevice::SendSystemExclusiveVoice(uint8_t nVoice, const unsigned nCable
   uint8_t voicedump[163];
 
   // Get voice sysex dump from TG
-  //m_pSynthesizer->getSysExVoiceDump(voicedump, nTG);
+  m_pSynthesizer->getSysExVoiceDump(voicedump, nTG);
 
-  //TDeviceMap::const_iterator Iterator;
+  TDeviceMap::const_iterator Iterator;
 
   // send voice dump to all MIDI interfaces
-  //for(Iterator = s_DeviceMap.begin(); Iterator != s_DeviceMap.end(); ++Iterator)
-  //{
-    //Iterator->second->Send (voicedump, sizeof(voicedump)*sizeof(uint8_t));
+  for(Iterator = s_DeviceMap.begin(); Iterator != s_DeviceMap.end(); ++Iterator)
+  {
+    Iterator->second->Send (voicedump, sizeof(voicedump)*sizeof(uint8_t));
     // LOGDBG("Send SYSEX voice dump %u to \"%s\"",nVoice,Iterator->first.c_str());
-  //}
+  }
 } 

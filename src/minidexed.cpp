@@ -23,7 +23,6 @@
 #include <circle/sound/pwmsoundbasedevice.h>
 #include <circle/sound/i2ssoundbasedevice.h>
 #include <circle/sound/hdmisoundbasedevice.h>
-#include <circle/usb/usbhcidevice.h>//RK111 reset
 #include <circle/gpiopin.h>
 #include <string.h>
 #include <stdio.h>
@@ -40,8 +39,8 @@ CMiniDexed::CMiniDexed (CConfig *pConfig, CInterruptSystem *pInterrupt,
 	m_pConfig (pConfig),
 	m_UI (this, pGPIOManager, pI2CMaster, pConfig),
 	m_PerformanceConfig (pFileSystem),
-	//m_PCKeyboard (this, pConfig, &m_UI),
-	//m_SerialMIDI (this, pInterrupt, pConfig, &m_UI),
+	m_PCKeyboard (this, pConfig, &m_UI),
+	m_SerialMIDI (this, pInterrupt, pConfig, &m_UI),
 	m_bUseSerial (false),
 	m_pSoundDevice (0),
 	m_bChannelsSwapped (pConfig->GetChannelsSwapped ()),
@@ -185,12 +184,12 @@ bool CMiniDexed::Initialize (void)
 
 	m_SysExFileLoader.Load (m_pConfig->GetHeaderlessSysExVoices ());
 
-	//if (m_SerialMIDI.Initialize ())
-	//{
-	//	LOGNOTE ("Serial MIDI interface enabled");
+	if (m_SerialMIDI.Initialize ())
+	{
+		LOGNOTE ("Serial MIDI interface enabled");
 
-	//	m_bUseSerial = true;
-	//}
+		m_bUseSerial = true;
+	}
 	
 	if (m_pConfig->GetMIDIRXProgramChange())
 	{
@@ -272,7 +271,7 @@ bool CMiniDexed::Initialize (void)
 	return true;
 }
 
-void CMiniDexed::Process (bool bPlugAndPlayUpdated,CUSBController *m_pUSB)
+void CMiniDexed::Process (bool bPlugAndPlayUpdated)
 {
 #ifndef ARM_ALLOW_MULTI_CORE
 	ProcessSound ();
@@ -284,11 +283,11 @@ void CMiniDexed::Process (bool bPlugAndPlayUpdated,CUSBController *m_pUSB)
 		m_pMIDIKeyboard[i]->Process (bPlugAndPlayUpdated);
 	}
 
-	//m_PCKeyboard.Process (bPlugAndPlayUpdated);
+	m_PCKeyboard.Process (bPlugAndPlayUpdated);
 
 	if (m_bUseSerial)
 	{
-		//m_SerialMIDI.Process ();
+		m_SerialMIDI.Process ();
 	}
 
 	m_UI.Process ();
@@ -313,9 +312,7 @@ void CMiniDexed::Process (bool bPlugAndPlayUpdated,CUSBController *m_pUSB)
 		{
 			m_bSetNewPerformance = false;
 		}
-		//reset USB
-		//m_pUSB->ReScanDevices();
-		m_pUSB->Initialize ();
+		
 	}
 	
 	if(m_bDeletePerformance)
@@ -480,7 +477,7 @@ void CMiniDexed::ProgramChange (unsigned nProgram, unsigned nTG)
 		// MIDI channel configured for this TG
 		if (m_nMIDIChannel[nTG] < CMIDIDevice::Channels)
 		{
-		//	m_SerialMIDI.SendSystemExclusiveVoice(nProgram,0,nTG);
+			m_SerialMIDI.SendSystemExclusiveVoice(nProgram,0,nTG);
 		}
 	}
 
@@ -581,25 +578,25 @@ void CMiniDexed::SetResonance (int nResonance, unsigned nTG)
 }
 
 
-//looks like a candidate for the culprit
+
 void CMiniDexed::SetMIDIChannel (uint8_t uchChannel, unsigned nTG)
 {
 	assert (nTG < CConfig::ToneGenerators);
 	assert (uchChannel < CMIDIDevice::ChannelUnknown);
 
 	m_nMIDIChannel[nTG] = uchChannel;
-	//m_pMIDIKeyboard[0]->SetChannel (0, 0);
+
 	for (unsigned i = 0; i < CConfig::MaxUSBMIDIDevices; i++)
 	{
 		assert (m_pMIDIKeyboard[i]);
 		m_pMIDIKeyboard[i]->SetChannel (uchChannel, nTG);
 	}
-	//m_pMIDIKeyboard[i]->SetChannel (uchChannel, nTG);
-	//m_PCKeyboard.SetChannel (uchChannel, nTG);
+
+	m_PCKeyboard.SetChannel (uchChannel, nTG);
 
 	if (m_bUseSerial)
 	{
-	//	m_SerialMIDI.SetChannel (uchChannel, nTG);
+		m_SerialMIDI.SetChannel (uchChannel, nTG);
 	}
 
 #ifdef ARM_ALLOW_MULTI_CORE
@@ -1532,7 +1529,7 @@ bool CMiniDexed::DoSetNewPerformance (void)
 	if (m_PerformanceConfig.Load ())
 	{
 		LoadPerformanceParameters();
-		m_bLoadPerformanceBusy = false;	
+		m_bLoadPerformanceBusy = false;
 		return true;
 	}
 	else

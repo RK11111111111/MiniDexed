@@ -63,7 +63,7 @@ void CMIDIKeyboard::Process (boolean bPlugAndPlayUpdated)
 
 		if (m_pMIDIDevice)
 		{
-			//m_pMIDIDevice->SendPlainMIDI (Entry.nCable, Entry.pMessage, Entry.nLength);
+			m_pMIDIDevice->SendPlainMIDI (Entry.nCable, Entry.pMessage, Entry.nLength);
 		}
 
 		delete [] Entry.pMessage;
@@ -73,7 +73,7 @@ void CMIDIKeyboard::Process (boolean bPlugAndPlayUpdated)
 	{
 		return;
 	}
-	//RK Set m_pMIDIDevice zero to force reregister.
+
 	if (m_pMIDIDevice == 0)
 	{
 		m_pMIDIDevice =

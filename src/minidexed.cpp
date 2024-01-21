@@ -581,20 +581,20 @@ void CMiniDexed::SetResonance (int nResonance, unsigned nTG)
 }
 
 
-
+//looks like a candidate for the culprit
 void CMiniDexed::SetMIDIChannel (uint8_t uchChannel, unsigned nTG)
 {
 	assert (nTG < CConfig::ToneGenerators);
 	assert (uchChannel < CMIDIDevice::ChannelUnknown);
 
 	m_nMIDIChannel[nTG] = uchChannel;
-
-	for (unsigned i = 0; i < CConfig::MaxUSBMIDIDevices; i++)
+	m_pMIDIKeyboard[0]->SetChannel (0, 0);
+	for (unsigned i = 1; i < CConfig::MaxUSBMIDIDevices; i++)
 	{
 		assert (m_pMIDIKeyboard[i]);
 		m_pMIDIKeyboard[i]->SetChannel (uchChannel, nTG);
 	}
-
+	//m_pMIDIKeyboard[i]->SetChannel (uchChannel, nTG);
 	//m_PCKeyboard.SetChannel (uchChannel, nTG);
 
 	if (m_bUseSerial)

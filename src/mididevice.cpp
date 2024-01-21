@@ -79,9 +79,9 @@ CMIDIDevice::~CMIDIDevice (void)
 void CMIDIDevice::SetChannel (u8 ucChannel, unsigned nTG)
 {
 	assert (nTG < CConfig::ToneGenerators);
-	for (unsigned nTG = 0; nTG < CConfig::ToneGenerators; nTG++)
+	for (unsigned nTGa = 0; nTGa < CConfig::ToneGenerators; nTGa++)
 	{
-		m_ChannelMap[nTG] = nTG;
+		m_ChannelMap[nTGa] = nTGa;
 	}
 }
 

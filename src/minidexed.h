@@ -43,7 +43,6 @@
 #include "effect_mixer.hpp"
 #include "effect_platervbstereo.h"
 #include "effect_compressor.h"
-#include <circle/usb/usbhcidevice.h>
 
 class CMiniDexed
 #ifdef ARM_ALLOW_MULTI_CORE
@@ -56,7 +55,7 @@ public:
 
 	bool Initialize (void);
 
-	void Process (bool bPlugAndPlayUpdated, CUSBController *m_pUSB);
+	void Process (bool bPlugAndPlayUpdated);
 
 #ifdef ARM_ALLOW_MULTI_CORE
 	void Run (unsigned nCore);
@@ -276,11 +275,10 @@ private:
 	CUserInterface m_UI;
 	CSysExFileLoader m_SysExFileLoader;
 	CPerformanceConfig m_PerformanceConfig;
-	char unused_buffer_bad_a[1024];
 
 	CMIDIKeyboard *m_pMIDIKeyboard[CConfig::MaxUSBMIDIDevices];
-	//CPCKeyboard m_PCKeyboard;
-	//CSerialMIDIDevice m_SerialMIDI;
+	CPCKeyboard m_PCKeyboard;
+	CSerialMIDIDevice m_SerialMIDI;
 	bool m_bUseSerial;
 
 	CSoundBaseDevice *m_pSoundDevice;

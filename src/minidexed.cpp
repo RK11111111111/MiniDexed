@@ -588,8 +588,8 @@ void CMiniDexed::SetMIDIChannel (uint8_t uchChannel, unsigned nTG)
 	assert (uchChannel < CMIDIDevice::ChannelUnknown);
 
 	m_nMIDIChannel[nTG] = uchChannel;
-	m_pMIDIKeyboard[0]->SetChannel (0, 0);
-	for (unsigned i = 1; i < CConfig::MaxUSBMIDIDevices; i++)
+	//m_pMIDIKeyboard[0]->SetChannel (0, 0);
+	for (unsigned i = 0; i < CConfig::MaxUSBMIDIDevices; i++)
 	{
 		assert (m_pMIDIKeyboard[i]);
 		m_pMIDIKeyboard[i]->SetChannel (uchChannel, nTG);

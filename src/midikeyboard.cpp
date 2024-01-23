@@ -103,24 +103,28 @@ void CMIDIKeyboard::Send (const u8 *pMessage, size_t nLength, unsigned nCable)
 void CMIDIKeyboard::MIDIPacketHandler0 (unsigned nCable, u8 *pPacket, unsigned nLength)
 {
 	assert (s_pThis[0] != 0);
+	printf ("MIDIPacketHandler0: cable:%u pPack[0]: %02X pPadk[1]: %02X\n", nCable,	(unsigned) pPacket[0], (unsigned) pPacket[1]);
 	s_pThis[0]->MIDIMessageHandler (pPacket, nLength, nCable);
 }
 
 void CMIDIKeyboard::MIDIPacketHandler1 (unsigned nCable, u8 *pPacket, unsigned nLength)
 {
 	assert (s_pThis[1] != 0);
+	printf ("MIDIPacketHandler2: cable:%u pPack[0]: %02X pPadk[1]: %02X\n", nCable,	(unsigned) pPacket[0], (unsigned) pPacket[1]);
 	s_pThis[1]->MIDIMessageHandler (pPacket, nLength, nCable);
 }
 
 void CMIDIKeyboard::MIDIPacketHandler2 (unsigned nCable, u8 *pPacket, unsigned nLength)
 {
 	assert (s_pThis[2] != 0);
+	printf ("MIDIPacketHandler2: cable:%u pPack[0]: %02X pPadk[1]: %02X\n", nCable,	(unsigned) pPacket[0], (unsigned) pPacket[1]);
 	s_pThis[2]->MIDIMessageHandler (pPacket, nLength, nCable);
 }
 
 void CMIDIKeyboard::MIDIPacketHandler3 (unsigned nCable, u8 *pPacket, unsigned nLength)
 {
 	assert (s_pThis[3] != 0);
+	printf ("MIDIPacketHandler3: cable:%u pPack[0]: %02X pPadk[1]: %02X\n", nCable,	(unsigned) pPacket[0], (unsigned) pPacket[1]);
 	s_pThis[3]->MIDIMessageHandler (pPacket, nLength, nCable);
 }
 

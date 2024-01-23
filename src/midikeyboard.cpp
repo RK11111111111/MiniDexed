@@ -66,6 +66,8 @@ void CMIDIKeyboard::Process (boolean bPlugAndPlayUpdated)
 		}
 		u8 ucStatus  = Entry.pMessage[0];
 		u8 ucChannel = ucStatus & 0x0F;
+		printf ("-----------Inter: pPack[0]: %02X vhsnll: %02X\n",	(unsigned) Entry.pMessage[0], ucChannel);
+	
 		if(ucChannel == 8){
 			printf("Yikes get me out of here");
 				m_pMIDIDevice =

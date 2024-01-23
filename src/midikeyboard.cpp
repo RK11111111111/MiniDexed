@@ -113,10 +113,9 @@ void CMIDIKeyboard::MIDIPacketHandler0 (unsigned nCable, u8 *pPacket, unsigned n
 
 	if(ucChannel == 8){
 		printf("Yikes get me out of here");
-CMIDIKeyboard *pThis = static_cast<CMIDIKeyboard *> (pContext);
-	assert (pThis != 0);
-
-	m_pMIDIDevice = 0;
+	
+	m_pMIDIDevice = 	(CUSBMIDIDevice *) CDeviceNameService::Get ()->GetDevice (m_DeviceName, FALSE);
+	//m_pMIDIDevice->DeviceRemovedHandler();
 	}
 }
 

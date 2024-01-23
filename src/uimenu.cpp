@@ -412,7 +412,7 @@ void CUIMenu::EventHandler (TMenuEvent Event)
 	case MenuEventPgmUp:
 	case MenuEventPgmDown:
 		LOGDBG("EVENT RK 4");
-		LOGDBG("RK(Event);
+		LOGDBG("RK(Event)");
 		break;
 
 	case MenuEventTGUp:
@@ -426,7 +426,6 @@ void CUIMenu::EventHandler (TMenuEvent Event)
 		(*m_pParentMenu[m_nCurrentMenuItem].Handler) (this, Event);
 		break;
 	}
-	LOGDBG("EVENT RK 7");
 }
 
 void CUIMenu::MenuHandler (CUIMenu *pUIMenu, TMenuEvent Event)

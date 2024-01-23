@@ -363,9 +363,11 @@ CUIMenu::CUIMenu (CUserInterface *pUI, CMiniDexed *pMiniDexed)
 
 void CUIMenu::EventHandler (TMenuEvent Event)
 {
+	LOGDBG("EVENT RK 1");
 	switch (Event)
 	{
-	case MenuEventBack:				// pop menu
+	case MenuEventBack:	
+		LOGDBG("EVENT RK 2");			// pop menu
 		if (m_nCurrentMenuDepth)
 		{
 			m_nCurrentMenuDepth--;
@@ -381,6 +383,7 @@ void CUIMenu::EventHandler (TMenuEvent Event)
 		break;
 
 	case MenuEventHome:
+		LOGDBG("EVENT RK 3");
 #ifdef ARM_ALLOW_MULTI_CORE
 		m_pParentMenu = s_MenuRoot;
 		m_pCurrentMenu = s_MainMenu;
@@ -408,18 +411,22 @@ void CUIMenu::EventHandler (TMenuEvent Event)
 
 	case MenuEventPgmUp:
 	case MenuEventPgmDown:
-		PgmUpDownHandler(Event);
+		LOGDBG("EVENT RK 4");
+		LOGDBG("RK(Event);
 		break;
 
 	case MenuEventTGUp:
 	case MenuEventTGDown:
+		LOGDBG("EVENT RK 5");
 		TGUpDownHandler(Event);
 		break;
 
 	default:
+		LOGDBG("EVENT RK 6");
 		(*m_pParentMenu[m_nCurrentMenuItem].Handler) (this, Event);
 		break;
 	}
+	LOGDBG("EVENT RK 7");
 }
 
 void CUIMenu::MenuHandler (CUIMenu *pUIMenu, TMenuEvent Event)
@@ -619,7 +626,7 @@ void CUIMenu::EditProgramNumber (CUIMenu *pUIMenu, TMenuEvent Event)
 	}
 
 	// Skip empty voices.
-	// Use same criteria in PgmUpDownHandler() too.
+	// Use same criteria in LOGDBG("RK() too.
 	string voiceName = pUIMenu->m_pMiniDexed->GetVoiceName (nTG);
 	if (voiceName == "EMPTY     "
 	    || voiceName == "          "
@@ -1204,7 +1211,7 @@ void CUIMenu::OPShortcutHandler (TMenuEvent Event)
 	}
 }
 
-void CUIMenu::PgmUpDownHandler (TMenuEvent Event)
+void CUIMenu::LOGDBG("RK (TMenuEvent Event)
 {
 	if (m_pMiniDexed->GetParameter (CMiniDexed::ParameterPerformanceSelectChannel) != CMIDIDevice::Disabled)
 	{
@@ -1293,10 +1300,10 @@ void CUIMenu::PgmUpDownHandler (TMenuEvent Event)
 			|| voiceName == "~~~~~~~~~~" )
 		{
 			if (Event == MenuEventPgmUp) {
-				PgmUpDownHandler (MenuEventPgmUp);
+				LOGDBG("RK (MenuEventPgmUp);
 			}
 			if (Event == MenuEventPgmDown) {
-				PgmUpDownHandler (MenuEventPgmDown);
+				LOGDBG("RK (MenuEventPgmDown);
 			}
 		}
 	}

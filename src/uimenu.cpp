@@ -362,7 +362,7 @@ CUIMenu::CUIMenu (CUserInterface *pUI, CMiniDexed *pMiniDexed)
 }
 
 void CUIMenu::EventHandler (TMenuEvent Event)
-{
+{  LOGDBG("RK 1 EventHandler %x\n",Event);
 	switch (Event)
 	{
 	case MenuEventBack:				// pop menu
@@ -403,6 +403,7 @@ void CUIMenu::EventHandler (TMenuEvent Event)
 		m_nMenuStackSelection[0] = 0;
 		m_nMenuStackParameter[0] = 0;
 #endif
+		//recursive call here?
 		EventHandler (MenuEventUpdate);
 		break;
 
@@ -430,6 +431,7 @@ void CUIMenu::MenuHandler (CUIMenu *pUIMenu, TMenuEvent Event)
 		break;
 
 	case MenuEventSelect:				// push menu
+		LOGDBG("RK 1");
 		assert (pUIMenu->m_nCurrentMenuDepth < MaxMenuDepth);
 		pUIMenu->m_MenuStackParent[pUIMenu->m_nCurrentMenuDepth] = pUIMenu->m_pParentMenu;
 		pUIMenu->m_MenuStackMenu[pUIMenu->m_nCurrentMenuDepth] = pUIMenu->m_pCurrentMenu;
@@ -451,6 +453,7 @@ void CUIMenu::MenuHandler (CUIMenu *pUIMenu, TMenuEvent Event)
 		break;
 
 	case MenuEventStepDown:
+		LOGDBG("RK 2");
 		if (pUIMenu->m_nCurrentSelection > 0)
 		{
 			pUIMenu->m_nCurrentSelection--;
@@ -458,6 +461,7 @@ void CUIMenu::MenuHandler (CUIMenu *pUIMenu, TMenuEvent Event)
 		break;
 
 	case MenuEventStepUp:
+		LOGDBG("RK 3");
 		++pUIMenu->m_nCurrentSelection;
 		if (!pUIMenu->m_pCurrentMenu[pUIMenu->m_nCurrentSelection].Name)  // more entries?
 		{

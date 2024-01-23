@@ -1208,31 +1208,37 @@ void CUIMenu::PgmUpDownHandler (TMenuEvent Event)
 {
 	if (m_pMiniDexed->GetParameter (CMiniDexed::ParameterPerformanceSelectChannel) != CMIDIDevice::Disabled)
 	{
+		LOGNOTE("RK 1");
 		// Program Up/Down acts on performances
 		unsigned nLastPerformance = m_pMiniDexed->GetLastPerformance();
 		unsigned nPerformance = m_pMiniDexed->GetActualPerformanceID();
-		//LOGNOTE("Performance actual=%d, last=%d", nPerformance, nLastPerformance);
+		LOGNOTE("Performance actual=%d, last=%d", nPerformance, nLastPerformance);
 		if (Event == MenuEventPgmDown)
 		{
+			LOGNOTE("RK 1.1");
 			if (nPerformance > 0)
 			{
+				LOGNOTE("RK 1.1.1");
 				m_nSelectedPerformanceID = nPerformance-1;
 				m_pMiniDexed->SetNewPerformance(m_nSelectedPerformanceID);
-				//LOGNOTE("Performance new=%d, last=%d", m_nSelectedPerformanceID, nLastPerformance);
+				LOGNOTE("Performance new=%d, last=%d", m_nSelectedPerformanceID, nLastPerformance);
 			}
 		}
 		else
 		{
+			LOGNOTE("RK 1.2");
 			if (nPerformance < nLastPerformance-1)
 			{
+				LOGNOTE("RK 1.2.1");
 				m_nSelectedPerformanceID = nPerformance+1;
 				m_pMiniDexed->SetNewPerformance(m_nSelectedPerformanceID);
-				//LOGNOTE("Performance new=%d, last=%d", m_nSelectedPerformanceID, nLastPerformance);
+				LOGNOTE("Performance new=%d, last=%d", m_nSelectedPerformanceID, nLastPerformance);
 			}
 		}
 	}
 	else
 	{
+		LOGNOTE("RK 2");
 		// Program Up/Down acts on voices within a TG.
 	
 		// If we're not in the root menu, then see if we are already in a TG menu,
@@ -1240,6 +1246,7 @@ void CUIMenu::PgmUpDownHandler (TMenuEvent Event)
 		unsigned nTG = 0;
 		if (m_MenuStackMenu[0] == s_MainMenu && (m_pCurrentMenu == s_TGMenu) || (m_MenuStackMenu[1] == s_TGMenu)) {
 			nTG = m_nMenuStackSelection[0];
+			LOGNOTE("RK 2.1");
 		}
 		assert (nTG < CConfig::ToneGenerators);
 
@@ -1248,9 +1255,11 @@ void CUIMenu::PgmUpDownHandler (TMenuEvent Event)
 		assert (Event == MenuEventPgmDown || Event == MenuEventPgmUp);
 		if (Event == MenuEventPgmDown)
 		{
-			//LOGNOTE("PgmDown");
+			LOGNOTE("RK 2.2");
+			LOGNOTE("PgmDown");
 			if (--nPgm < 0)
 			{
+				LOGNOTE("RK 2.2.1");
 				// Switch down a voice bank and set to the last voice
 				nPgm = CSysExFileLoader::VoicesPerBank-1;
 				int nVB = m_pMiniDexed->GetTGParameter(CMiniDexed::TGParameterVoiceBank, nTG);
@@ -1261,9 +1270,11 @@ void CUIMenu::PgmUpDownHandler (TMenuEvent Event)
 		}
 		else
 		{
-			//LOGNOTE("PgmUp");
+			LOGNOTE("RK 2.2");
+			LOGNOTE("PgmUp");
 			if (++nPgm > (int) CSysExFileLoader::VoicesPerBank-1)
 			{
+				LOGNOTE("RK 2.2.2");
 				// Switch up a voice bank and reset to voice 0
 				nPgm = 0;
 				int nVB = m_pMiniDexed->GetTGParameter(CMiniDexed::TGParameterVoiceBank, nTG);

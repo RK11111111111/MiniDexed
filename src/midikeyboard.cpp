@@ -79,7 +79,7 @@ void CMIDIKeyboard::Process (boolean bPlugAndPlayUpdated)
 		}
 		}
 
-	}
+	
 
 
 		delete [] Entry.pMessage;

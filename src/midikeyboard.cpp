@@ -44,7 +44,6 @@ CMIDIKeyboard::CMIDIKeyboard (CMiniDexed *pSynthesizer, CConfig *pConfig, CUserI
 	s_pThis[m_nInstance] = this;
 
 	m_DeviceName.Format ("umidi%u", nInstance+1);
-
 	AddDevice (m_DeviceName);
 }
 
@@ -104,6 +103,16 @@ void CMIDIKeyboard::MIDIPacketHandler0 (unsigned nCable, u8 *pPacket, unsigned n
 {
 	assert (s_pThis[0] != 0);
 	printf ("MIDIPacketHandler0: cable:%u pPack[0]: %02X pPadk[1]: %02X\n", nCable,	(unsigned) pPacket[0], (unsigned) pPacket[1]);
+	
+	//If this is the buttons then 
+		printf ("MIDIPacketHandler0: ca%u pPack[0] 0xF0: %02X", pPacket[0]& 0xF0);
+	u8 ucStatus  = pPacket[0];
+	u8 ucChannel = ucStatus & 0x0F;
+	if(ucChannel == 8){
+		printf("Yikes get me out of here");
+	//RKfix 
+	s_pThis[0]->DeviceRemovedHandler();
+	}
 	s_pThis[0]->MIDIMessageHandler (pPacket, nLength, nCable);
 }
 

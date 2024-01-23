@@ -218,9 +218,13 @@ void CMIDIDevice::MIDIMessageHandler (const u8 *pMessage, size_t nLength, unsign
 		// Process MIDI for each Tone Generator
 		for (unsigned nTG = 0; nTG < CConfig::ToneGenerators; nTG++)
 		{
+
+			//ah ha ucChannel is changing
 		  printf ("RKMIDI%u: %02X %02X %02X\n --- uc:%X nTG:%X chntg:%X", nCable,
 				(unsigned) pMessage[0], (unsigned) pMessage[1],
 				(unsigned) pMessage[2], ucStatus, ucChannel, nTG,m_ChannelMap[nTG]);
+			//B8 70 00 B8 uc B8 nTG 8 chntg 0
+			// B message on chnnel 8(9 one based, resert the device.)
 			if (ucStatus == MIDI_SYSTEM_EXCLUSIVE_BEGIN)
 			{
 				// MIDI SYSEX per MIDI channel

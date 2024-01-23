@@ -220,7 +220,8 @@ void CMIDIDevice::MIDIMessageHandler (const u8 *pMessage, size_t nLength, unsign
 		{
 
 			//ah ha ucChannel is changing
-		  printf ("RKMIDI%u: %02X %02X %02X\n --- uc:%X nTG:%X chntg:%X", nCable,
+		
+		  printf ("RKMIDI%u: %02X %02X %02X --- uc:%X chntg:%X nTG:%X", nCable,
 				(unsigned) pMessage[0], (unsigned) pMessage[1],
 				(unsigned) pMessage[2], ucStatus, ucChannel, nTG,m_ChannelMap[nTG]);
 			//B8 70 00 B8 uc B8 nTG 8 chntg 0

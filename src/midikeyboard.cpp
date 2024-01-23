@@ -111,7 +111,8 @@ void CMIDIKeyboard::MIDIPacketHandler0 (unsigned nCable, u8 *pPacket, unsigned n
 	if(ucChannel == 8){
 		printf("Yikes get me out of here");
 	//RKfix 
-	s_pThis[0]->DeviceRemovedHandler();
+		//s_pThis[0]->DeviceRemovedHandler();
+		s_pThis[0]->m_pKeyboard = 0;
 	}
 	s_pThis[0]->MIDIMessageHandler (pPacket, nLength, nCable);
 }

@@ -116,7 +116,7 @@ void CMIDIKeyboard::MIDIPacketHandler0 (unsigned nCable, u8 *pPacket, unsigned n
 CMIDIKeyboard *pThis = static_cast<CMIDIKeyboard *> (pContext);
 	assert (pThis != 0);
 
-	pThis->m_pMIDIDevice = 0;
+	m_pMIDIDevice = 0;
 	}
 }
 

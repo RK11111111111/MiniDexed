@@ -156,13 +156,13 @@ void CMIDIDevice::MIDIMessageHandler (const u8 *pMessage, size_t nLength, unsign
 	// Handle MIDI Thru
 	if (m_DeviceName.compare (m_pConfig->GetMIDIThruIn ()) == 0)
 	{
-		TDeviceMap::const_iterator Iterator;
+		/* TDeviceMap::const_iterator Iterator;
 
 		Iterator = s_DeviceMap.find (m_pConfig->GetMIDIThruOut ());
 		if (Iterator != s_DeviceMap.end ())
 		{
 			Iterator->second->Send (pMessage, nLength, nCable);
-		}
+		} */
 	}
 
 	if (nLength < 2)
@@ -224,6 +224,13 @@ void CMIDIDevice::MIDIMessageHandler (const u8 *pMessage, size_t nLength, unsign
 		  printf ("RKMIDI%u: %02X %02X %02X --- uc:%X chntg:%X nTG:%X", nCable,
 				(unsigned) pMessage[0], (unsigned) pMessage[1],
 				(unsigned) pMessage[2], ucStatus, ucChannel, nTG,m_ChannelMap[nTG]);
+
+				Iterator = s_DeviceMap.find (m_pConfig->GetMIDIThruOut ());
+		if (Iterator != s_DeviceMap.end ())
+		{
+			Iterator->second->Send (pMessage, nLength, nCable);
+			CMIDIDevice::
+		}
 			//B8 70 00 B8 uc B8 nTG 8 chntg 0
 			// B message on chnnel 8(9 one based, resert the device.)
 			if (ucStatus == MIDI_SYSTEM_EXCLUSIVE_BEGIN)
@@ -540,11 +547,11 @@ void CMIDIDevice::SendSystemExclusiveVoice(uint8_t nVoice, const unsigned nCable
   m_pSynthesizer->getSysExVoiceDump(voicedump, nTG);
 
   TDeviceMap::const_iterator Iterator;
-
+/* 
   // send voice dump to all MIDI interfaces
   for(Iterator = s_DeviceMap.begin(); Iterator != s_DeviceMap.end(); ++Iterator)
   {
     Iterator->second->Send (voicedump, sizeof(voicedump)*sizeof(uint8_t));
     LOGDBG("Send SYSEX voice dump %u to \"%s\"",nVoice,Iterator->first.c_str());
-  }
+  } */
 } 

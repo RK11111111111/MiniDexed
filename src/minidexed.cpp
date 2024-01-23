@@ -581,13 +581,16 @@ void CMiniDexed::SetResonance (int nResonance, unsigned nTG)
 
 void CMiniDexed::SetMIDIChannel (uint8_t uchChannel, unsigned nTG)
 {
+	printf("Set midi channel\n")
 	assert (nTG < CConfig::ToneGenerators);
 	assert (uchChannel < CMIDIDevice::ChannelUnknown);
 
 	m_nMIDIChannel[nTG] = uchChannel;
+	printf("m_nMIDIChannel[nTG]: %X nTG %X: chn:%X ",m_nMIDIChannel[nTG],nTG,uchChannel);
 
 	for (unsigned i = 0; i < CConfig::MaxUSBMIDIDevices; i++)
 	{
+		printf("m_pMIDIKeyboard[i]-: %X ",i);
 		assert (m_pMIDIKeyboard[i]);
 		m_pMIDIKeyboard[i]->SetChannel (uchChannel, nTG);
 	}
@@ -814,6 +817,7 @@ int CMiniDexed::GetParameter (TParameter Parameter)
 
 void CMiniDexed::SetTGParameter (TTGParameter Parameter, int nValue, unsigned nTG)
 {
+	printf("set TG\n");
 	assert (nTG < CConfig::ToneGenerators);
 
 	switch (Parameter)

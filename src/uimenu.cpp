@@ -1150,7 +1150,7 @@ string CUIMenu::ToPolyMono (int nValue)
 
 void CUIMenu::TGShortcutHandler (TMenuEvent Event)
 {
-		LOGDBG("RK shortcut");
+		printf("RK shortcut");
 	assert (m_nCurrentMenuDepth >= 2);
 	assert (m_MenuStackMenu[0] = s_MainMenu);
 	unsigned nTG = m_nMenuStackSelection[0];

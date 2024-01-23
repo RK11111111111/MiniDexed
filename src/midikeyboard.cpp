@@ -64,6 +64,23 @@ void CMIDIKeyboard::Process (boolean bPlugAndPlayUpdated)
 		{
 			m_pMIDIDevice->SendPlainMIDI (Entry.nCable, Entry.pMessage, Entry.nLength);
 		}
+		u8 ucStatus  = Entry.pMessage[0];
+		u8 ucChannel = ucStatus & 0x0F;
+		if(ucChannel == 8){
+			printf("Yikes get me out of here");
+				m_pMIDIDevice =
+			(CUSBMIDIDevice *) CDeviceNameService::Get ()->GetDevice (m_DeviceName, FALSE);
+		if (m_pMIDIDevice != 0)
+		{
+			assert (m_nInstance < MaxInstances);
+			m_pMIDIDevice->RegisterPacketHandler (s_pMIDIPacketHandler[m_nInstance]);
+
+			m_pMIDIDevice->RegisterRemovedHandler (DeviceRemovedHandler, this);
+		}
+		}
+
+	}
+
 
 		delete [] Entry.pMessage;
 	}
@@ -85,6 +102,9 @@ void CMIDIKeyboard::Process (boolean bPlugAndPlayUpdated)
 			m_pMIDIDevice->RegisterRemovedHandler (DeviceRemovedHandler, this);
 		}
 	}
+
+
+	
 }
 
 void CMIDIKeyboard::Send (const u8 *pMessage, size_t nLength, unsigned nCable)
@@ -108,15 +128,9 @@ void CMIDIKeyboard::MIDIPacketHandler0 (unsigned nCable, u8 *pPacket, unsigned n
 		
 	
 	s_pThis[0]->MIDIMessageHandler (pPacket, nLength, nCable);
-	u8 ucStatus  = pPacket[0];
-	u8 ucChannel = ucStatus & 0x0F;
-
-	if(ucChannel == 8){
-		printf("Yikes get me out of here");
 	
-	m_pMIDIDevice = 	(CUSBMIDIDevice *) CDeviceNameService::Get ()->GetDevice (m_DeviceName, FALSE);
-	//m_pMIDIDevice->DeviceRemovedHandler();
-	}
+
+	
 }
 
 void CMIDIKeyboard::MIDIPacketHandler1 (unsigned nCable, u8 *pPacket, unsigned nLength)

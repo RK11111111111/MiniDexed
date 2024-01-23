@@ -106,6 +106,8 @@ void CMIDIKeyboard::MIDIPacketHandler0 (unsigned nCable, u8 *pPacket, unsigned n
 	
 	//If this is the buttons then 
 		
+	
+	s_pThis[0]->MIDIMessageHandler (pPacket, nLength, nCable);
 	u8 ucStatus  = pPacket[0];
 	u8 ucChannel = ucStatus & 0x0F;
 
@@ -118,7 +120,6 @@ void CMIDIKeyboard::MIDIPacketHandler0 (unsigned nCable, u8 *pPacket, unsigned n
     	this->m_pMIDIDevice = 0;
 		//s_pThis[0]->m_pMIDIDevice = 0;
 	}
-	s_pThis[0]->MIDIMessageHandler (pPacket, nLength, nCable);
 }
 
 void CMIDIKeyboard::MIDIPacketHandler1 (unsigned nCable, u8 *pPacket, unsigned nLength)

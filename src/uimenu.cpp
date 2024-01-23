@@ -1150,6 +1150,7 @@ string CUIMenu::ToPolyMono (int nValue)
 
 void CUIMenu::TGShortcutHandler (TMenuEvent Event)
 {
+		LOGDBG("RK shortcut");
 	assert (m_nCurrentMenuDepth >= 2);
 	assert (m_MenuStackMenu[0] = s_MainMenu);
 	unsigned nTG = m_nMenuStackSelection[0];
@@ -1180,6 +1181,7 @@ void CUIMenu::TGShortcutHandler (TMenuEvent Event)
 
 void CUIMenu::OPShortcutHandler (TMenuEvent Event)
 {
+
 	assert (m_nCurrentMenuDepth >= 3);
 	assert (m_MenuStackMenu[m_nCurrentMenuDepth-2] = s_EditVoiceMenu);
 	unsigned nOP = m_nMenuStackSelection[m_nCurrentMenuDepth-2];
@@ -1212,11 +1214,11 @@ void CUIMenu::PgmUpDownHandler (TMenuEvent Event)
 {
 	if (m_pMiniDexed->GetParameter (CMiniDexed::ParameterPerformanceSelectChannel) != CMIDIDevice::Disabled)
 	{
-		LOGDBG("RK 1");
+		LOGDBG("RK updown");
 		// Program Up/Down acts on performances
 		unsigned nLastPerformance = m_pMiniDexed->GetLastPerformance();
 		unsigned nPerformance = m_pMiniDexed->GetActualPerformanceID();
-		LOGNOTE("Performance actual=%d, last=%d", nPerformance, nLastPerformance);
+		LOGDBG("Performance actual=%d, last=%d", nPerformance, nLastPerformance);
 		if (Event == MenuEventPgmDown)
 		{
 			LOGDBG("RK 1.1");

@@ -224,7 +224,7 @@ void CMIDIDevice::MIDIMessageHandler (const u8 *pMessage, size_t nLength, unsign
 				uint8_t ucSysExChannel = (pMessage[2] & 0x0F);
 				if (m_ChannelMap[nTG] == ucSysExChannel || m_ChannelMap[nTG] == OmniMode)
 				{
-					LOGNOTE("MIDI-SYSEX: channel: %u, len: %u, TG: %u",m_ChannelMap[nTG],nLength,nTG);
+					LOGDBG("MIDI-SYSEX: channel: %u, len: %u, TG: %u",m_ChannelMap[nTG],nLength,nTG);
 					HandleSystemExclusive(pMessage, nLength, nCable, nTG);
 				}
 			}
@@ -233,6 +233,7 @@ void CMIDIDevice::MIDIMessageHandler (const u8 *pMessage, size_t nLength, unsign
 				if (   m_ChannelMap[nTG] == ucChannel
 				    || m_ChannelMap[nTG] == OmniMode)
 				{
+					LOGDBG("MIDI-SYSEX: channelnap: %u, ucChannel: %u, nTG: %u",m_ChannelMap[nTG],ucChannel,nTG);
 					switch (ucType)
 					{
 					case MIDI_NOTE_ON:
@@ -536,6 +537,6 @@ void CMIDIDevice::SendSystemExclusiveVoice(uint8_t nVoice, const unsigned nCable
   for(Iterator = s_DeviceMap.begin(); Iterator != s_DeviceMap.end(); ++Iterator)
   {
     Iterator->second->Send (voicedump, sizeof(voicedump)*sizeof(uint8_t));
-    // LOGDBG("Send SYSEX voice dump %u to \"%s\"",nVoice,Iterator->first.c_str());
+    LOGDBG("Send SYSEX voice dump %u to \"%s\"",nVoice,Iterator->first.c_str());
   }
 } 

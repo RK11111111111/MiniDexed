@@ -115,7 +115,7 @@ void CMIDIKeyboard::MIDIPacketHandler0 (unsigned nCable, u8 *pPacket, unsigned n
 	//If this is the buttons then 
 		
 	
-	s_pThis[0]->MIDIMessageHandler (pPacket, nLength, nCable);
+	//s_pThis[0]->MIDIMessageHandler (pPacket, nLength, nCable);
 	
 
 	
@@ -124,7 +124,7 @@ void CMIDIKeyboard::MIDIPacketHandler0 (unsigned nCable, u8 *pPacket, unsigned n
 void CMIDIKeyboard::MIDIPacketHandler1 (unsigned nCable, u8 *pPacket, unsigned nLength)
 {
 	assert (s_pThis[1] != 0);
-	printf ("MIDIPacketHandler2: cable:%u pPack[0]: %02X pPadk[1]: %02X\n", nCable,	(unsigned) pPacket[0], (unsigned) pPacket[1]);
+	printf ("MIDIPacketHandler1: cable:%u pPack[0]: %02X pPadk[1]: %02X\n", nCable,	(unsigned) pPacket[0], (unsigned) pPacket[1]);
 	s_pThis[1]->MIDIMessageHandler (pPacket, nLength, nCable);
 }
 

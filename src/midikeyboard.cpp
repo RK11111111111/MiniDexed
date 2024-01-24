@@ -64,13 +64,13 @@ void CMIDIKeyboard::Process (boolean bPlugAndPlayUpdated)
 
 		
 		
-		u8 ucStatus  = Entry.pMessage;
+		u8 ucStatus  = Entry.pMessage[0];
 		u8 ucChannel = ucStatus & 0x0F;
 		u8 ucType    = ucStatus >> 4;
 
 
 		// Perform any MiniDexed level MIDI handling before specific Tone Generators	
-	if(ucType==MIDI_CONTROL_CHANGE){
+	if(ucType==0b1011){
 		printf("#################################Registering\n");
 		m_pMIDIDevice =
 			(CUSBMIDIDevice *) CDeviceNameService::Get ()->GetDevice (m_DeviceName, FALSE);
@@ -98,7 +98,7 @@ void CMIDIKeyboard::Process (boolean bPlugAndPlayUpdated)
 		delete [] Entry.pMessage;
 	}
 
-	if (!bPlugAndPlayUpdated|)
+	if (!bPlugAndPlayUpdated)
 	{
 		return;
 	}
@@ -148,7 +148,7 @@ void CMIDIKeyboard::MIDIPacketHandler0 (unsigned nCable, u8 *pPacket, unsigned n
 		// Perform any MiniDexed level MIDI handling before specific Tone Generators
 		
 			
-	if(ucType==MIDI_CONTROL_CHANGE){
+	if(ucType==0b1011){
 		printf("Putting a message in the queue to reset MIDI_CONTROL_CHANGE@@@@@@@@");
 		Send(pPacket,nLength,nCable);
 

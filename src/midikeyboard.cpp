@@ -117,7 +117,7 @@ void CMIDIKeyboard::MIDIPacketHandler0 (unsigned nCable, u8 *pPacket, unsigned n
 	u8 ucType    = ucStatus >> 4;
 
 //m_pMIDIDevice =(CUSBMIDIDevice *) CDeviceNameService::Get ()->GetDevice (m_DeviceName, FALSE);
-	printf ("MIDIDevice: cable:%s  \n",s_pThis[1]->m_DeviceName);
+	printf ("MIDIDevice: cable:%s  \n",s_pThis[0]->m_DeviceName);
 		// Perform any MiniDexed level MIDI handling before specific Tone Generators
 		
 			

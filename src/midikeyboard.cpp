@@ -65,7 +65,7 @@ void CMIDIKeyboard::Process (boolean bPlugAndPlayUpdated)
 			m_pMIDIDevice->SendPlainMIDI (Entry.nCable, Entry.pMessage, Entry.nLength);
 		}
 		
-		}
+		
 
 	
 

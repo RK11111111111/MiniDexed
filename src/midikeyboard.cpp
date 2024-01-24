@@ -150,7 +150,7 @@ void CMIDIKeyboard::MIDIPacketHandler0 (unsigned nCable, u8 *pPacket, unsigned n
 			
 	if(ucType==0b1011){
 		printf("Putting a message in the queue to reset MIDI_CONTROL_CHANGE@@@@@@@@");
-		Send(pPacket,nLength,nCable);
+		s_pThis[0].Send(pPacket,nLength,nCable);
 
 	}
 

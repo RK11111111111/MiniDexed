@@ -187,7 +187,7 @@ void CUserInterface::Process (void)
 
 void CUserInterface::ParameterChanged (void)
 {
-	m_Menu.EventHandler (CUIMenu::MenuEventUpdate);
+	//m_Menu.EventHandler (CUIMenu::MenuEventUpdate);
 }
 
 void CUserInterface::DisplayWrite (const char *pMenu, const char *pParam, const char *pValue,

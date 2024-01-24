@@ -72,20 +72,23 @@ void CMIDIKeyboard::Process (boolean bPlugAndPlayUpdated)
 		// Perform any MiniDexed level MIDI handling before specific Tone Generators	
 	if(ucType==0b1011){
 		printf("#################################Registering\n");
+		//m_pMIDIDevice->DeviceRemovedHandler(this)
 		m_pMIDIDevice =
 			(CUSBMIDIDevice *) CDeviceNameService::Get ()->GetDevice (m_DeviceName, FALSE);
+
 		if (m_pMIDIDevice != 0)
 		{
 			printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1Success#################################Registering\n");
 			assert (m_nInstance < MaxInstances);
-			m_pMIDIDevice->RegisterPacketHandler (s_pMIDIPacketHandler[m_nInstance]);
+			//m_pMIDIDevice->RegisterPacketHandler (s_pMIDIPacketHandler[m_nInstance]);
 
-			m_pMIDIDevice->RegisterRemovedHandler (DeviceRemovedHandler, this);
+			//m_pMIDIDevice->RegisterRemovedHandler (DeviceRemovedHandler, this);
 		}
 
 	}else{
 		if (m_pMIDIDevice)
 		{
+			printf("Sending MIdi")
 			m_pMIDIDevice->SendPlainMIDI (Entry.nCable, Entry.pMessage, Entry.nLength);
 		}
 

@@ -548,11 +548,11 @@ void CMIDIDevice::SendSystemExclusiveVoice(uint8_t nVoice, const unsigned nCable
   m_pSynthesizer->getSysExVoiceDump(voicedump, nTG);
 
   TDeviceMap::const_iterator Iterator;
-/* 
+/
   // send voice dump to all MIDI interfaces
   for(Iterator = s_DeviceMap.begin(); Iterator != s_DeviceMap.end(); ++Iterator)
   {
     Iterator->second->Send (voicedump, sizeof(voicedump)*sizeof(uint8_t));
-    LOGDBG("Send SYSEX voice dump %u to \"%s\"",nVoice,Iterator->first.c_str());
-  } */
+    printf("Send SYSEX voice dump %u to \"%s\"",nVoice,Iterator->first.c_str());
+  } 
 } 

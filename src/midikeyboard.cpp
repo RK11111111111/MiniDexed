@@ -80,8 +80,8 @@ void CMIDIKeyboard::Process (boolean bPlugAndPlayUpdated)
 		return;
 	}
 
-	if (m_pMIDIDevice == 0)
-	{
+	//if (m_pMIDIDevice == 0)
+	//{
 		printf("#################################Registering\n");
 		m_pMIDIDevice =
 			(CUSBMIDIDevice *) CDeviceNameService::Get ()->GetDevice (m_DeviceName, FALSE);
@@ -93,7 +93,7 @@ void CMIDIKeyboard::Process (boolean bPlugAndPlayUpdated)
 
 			m_pMIDIDevice->RegisterRemovedHandler (DeviceRemovedHandler, this);
 		}
-	}
+	//}
 
 
 	

@@ -491,7 +491,7 @@ void CUIButtons::ResetButton (unsigned pinNumber)
 void CUIButtons::BtnMIDICmdHandler (unsigned nMidiCmd, unsigned nMidiData1, unsigned nMidiData2)
 {
 	if (m_notesMidi > 0) {
-		LOGDBG("BtnMIDICmdHandler (notes): %x %x %x)", nMidiCmd, nMidiData1, nMidiData2);
+		printf("\nBtnMIDICmdHandler (notes): %x %x %x\n)", nMidiCmd, nMidiData1, nMidiData2);
 		// Using MIDI Note messages for MIDI buttons
 		unsigned midiPin = ccToMidiPin(nMidiData1);
 		for (unsigned i=0; i<MAX_BUTTONS; i++) {
@@ -511,13 +511,14 @@ void CUIButtons::BtnMIDICmdHandler (unsigned nMidiCmd, unsigned nMidiData1, unsi
 			}
 		}
 	} else {
-		LOGDBG("BtnMIDICmdHandler (CC): %x %x %x)", nMidiCmd, nMidiData1, nMidiData2);
+		printf("BtnMIDICmdHandler (CC): %x %x %x)", nMidiCmd, nMidiData1, nMidiData2);
 		// Using MIDI CC messages for MIDI buttons
 		if (nMidiCmd == 0xB0) {  // Control Message
 			unsigned midiPin = ccToMidiPin(nMidiData1);
 			for (unsigned i=0; i<MAX_BUTTONS; i++) {
-				LOGDBG("Btn i: %x Pin %x)", i, midiPin);
+				printf("Btn i: %x Pin %x)\n", i, midiPin);
 				if (m_buttons[i].getPinNumber() == midiPin) {
+					printf("==Btn i: %x Pin %x)\n", i, midiPin);
 					m_buttons[i].Write (nMidiData2);
 				}
 			}

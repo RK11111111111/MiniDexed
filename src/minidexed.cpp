@@ -280,7 +280,7 @@ void CMiniDexed::Process (bool bPlugAndPlayUpdated)
 	for (unsigned i = 0; i < CConfig::MaxUSBMIDIDevices; i++)
 	{
 		assert (m_pMIDIKeyboard[i]);
-		printf("processing keybd: %u",i);
+		//printf("processing keybd: %u\n",i);
 		m_pMIDIKeyboard[i]->Process (bPlugAndPlayUpdated);
 	}
 
@@ -291,7 +291,7 @@ void CMiniDexed::Process (bool bPlugAndPlayUpdated)
 		m_SerialMIDI.Process ();
 	} */
 
-	m_UI.Process ();
+	//m_UI.Process ();
 
 	if (m_bSavePerformance)
 	{

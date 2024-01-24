@@ -54,7 +54,7 @@ CMIDIKeyboard::~CMIDIKeyboard (void)
 }
 
 void CMIDIKeyboard::Process (boolean bPlugAndPlayUpdated)
-{  printf("processing keybd:\n");
+{  //printf("processing keybd:\n");
 	while (!m_SendQueue.empty ())
 	{
 

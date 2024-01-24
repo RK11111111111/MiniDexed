@@ -581,7 +581,7 @@ void CMiniDexed::SetResonance (int nResonance, unsigned nTG)
 
 void CMiniDexed::SetMIDIChannel (uint8_t uchChannel, unsigned nTG)
 {
-	printf("Set midi channel\n")
+	printf("Set midi channel\n");
 	assert (nTG < CConfig::ToneGenerators);
 	assert (uchChannel < CMIDIDevice::ChannelUnknown);
 

@@ -82,10 +82,12 @@ void CMIDIKeyboard::Process (boolean bPlugAndPlayUpdated)
 
 	if (m_pMIDIDevice == 0)
 	{
+		printf("#################################Registering\n");
 		m_pMIDIDevice =
 			(CUSBMIDIDevice *) CDeviceNameService::Get ()->GetDevice (m_DeviceName, FALSE);
 		if (m_pMIDIDevice != 0)
 		{
+			printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1Success#################################Registering\n");
 			assert (m_nInstance < MaxInstances);
 			m_pMIDIDevice->RegisterPacketHandler (s_pMIDIPacketHandler[m_nInstance]);
 

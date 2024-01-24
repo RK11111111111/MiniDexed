@@ -274,7 +274,7 @@ bool CMiniDexed::Initialize (void)
 void CMiniDexed::Process (bool bPlugAndPlayUpdated)
 {
 #ifndef ARM_ALLOW_MULTI_CORE
-	ProcessSound ();
+	//ProcessSound ();
 #endif
 
 	for (unsigned i = 0; i < CConfig::MaxUSBMIDIDevices; i++)
@@ -292,7 +292,7 @@ void CMiniDexed::Process (bool bPlugAndPlayUpdated)
 	} */
 
 	//m_UI.Process ();
-
+/* 
 	if (m_bSavePerformance)
 	{
 		DoSavePerformance ();
@@ -325,7 +325,7 @@ void CMiniDexed::Process (bool bPlugAndPlayUpdated)
 	if (m_bProfileEnabled)
 	{
 		m_GetChunkTimer.Dump ();
-	}
+	} */
 }
 
 #ifdef ARM_ALLOW_MULTI_CORE

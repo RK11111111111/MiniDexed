@@ -190,6 +190,7 @@ void CMIDIDevice::MIDIMessageHandler (const u8 *pMessage, size_t nLength, unsign
 		switch (ucType)
 		{
 		case MIDI_CONTROL_CHANGE:
+		printf("MIDI_CONTROL_CHANGE");
 		case MIDI_NOTE_OFF:
 		case MIDI_NOTE_ON:
 			if (nLength < 3)
@@ -202,12 +203,13 @@ void CMIDIDevice::MIDIMessageHandler (const u8 *pMessage, size_t nLength, unsign
 			// Check for performance PC messages
 			if( m_pConfig->GetMIDIRXProgramChange() )
 			{
+				printf("MIDI_PROGRAM_CHANGE");
 				unsigned nPerfCh = m_pSynthesizer->GetPerformanceSelectChannel();
 				if( nPerfCh != Disabled)
 				{
 					if ((ucChannel == nPerfCh) || (nPerfCh == OmniMode))
 					{
-						//printf("Performance Select Channel %d\n", nPerfCh);
+						printf("Performance Select Channel %d\n", nPerfCh);
 						m_pSynthesizer->ProgramChangePerformance (pMessage[1]);
 					}
 				}
@@ -225,12 +227,8 @@ void CMIDIDevice::MIDIMessageHandler (const u8 *pMessage, size_t nLength, unsign
 				(unsigned) pMessage[0], (unsigned) pMessage[1],
 				(unsigned) pMessage[2], ucStatus, ucChannel, nTG,m_ChannelMap[nTG]);
 
-				Iterator = s_DeviceMap.find (m_pConfig->GetMIDIThruOut ());
-		if (Iterator != s_DeviceMap.end ())
-		{
-			Iterator->second->Send (pMessage, nLength, nCable);
-			CMIDIDevice::
-		}
+			
+		
 			//B8 70 00 B8 uc B8 nTG 8 chntg 0
 			// B message on chnnel 8(9 one based, resert the device.)
 			if (ucStatus == MIDI_SYSTEM_EXCLUSIVE_BEGIN)
@@ -239,7 +237,7 @@ void CMIDIDevice::MIDIMessageHandler (const u8 *pMessage, size_t nLength, unsign
 				uint8_t ucSysExChannel = (pMessage[2] & 0x0F);
 				if (m_ChannelMap[nTG] == ucSysExChannel || m_ChannelMap[nTG] == OmniMode)
 				{
-					LOGDBG("MIDI-SYSEX: channel: %u, len: %u, TG: %u",m_ChannelMap[nTG],nLength,nTG);
+					printf("MIDI-SYSEX: channel: %u, len: %u, TG: %u",m_ChannelMap[nTG],nLength,nTG);
 					HandleSystemExclusive(pMessage, nLength, nCable, nTG);
 				}
 			}
@@ -248,7 +246,8 @@ void CMIDIDevice::MIDIMessageHandler (const u8 *pMessage, size_t nLength, unsign
 				if (   m_ChannelMap[nTG] == ucChannel
 				    || m_ChannelMap[nTG] == OmniMode)
 				{
-					LOGDBG("MIDI-SYSEX: channelnap: %u, ucChannel: %u, nTG: %u",m_ChannelMap[nTG],ucChannel,nTG);
+					printf("MIDI-SYSEX: channelnap: %u, ucChannel: %u, nTG: %u",m_ChannelMap[nTG],ucChannel,nTG);
+					printf("uctype: %u",ucType);
 					switch (ucType)
 					{
 					case MIDI_NOTE_ON:
@@ -372,7 +371,7 @@ void CMIDIDevice::MIDIMessageHandler (const u8 *pMessage, size_t nLength, unsign
 					case MIDI_PROGRAM_CHANGE:
 						// do program change only if enabled in config and not in "Performance Select Channel" mode
 						if( m_pConfig->GetMIDIRXProgramChange() && ( m_pSynthesizer->GetPerformanceSelectChannel() == Disabled) ) {
-							//printf("Program Change to %d (%d)\n", ucChannel, m_pSynthesizer->GetPerformanceSelectChannel());
+							printf("Program Change to %d (%d)\n", ucChannel, m_pSynthesizer->GetPerformanceSelectChannel());
 							m_pSynthesizer->ProgramChange (pMessage[1], nTG);
 						}
 						break;

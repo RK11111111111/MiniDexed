@@ -62,26 +62,15 @@ void CMIDIKeyboard::Process (boolean bPlugAndPlayUpdated)
 		TSendQueueEntry Entry = m_SendQueue.front ();
 		m_SendQueue.pop ();
 
-		if (m_pMIDIDevice)
-		{
-			m_pMIDIDevice->SendPlainMIDI (Entry.nCable, Entry.pMessage, Entry.nLength);
-		}
 		
 		
+		u8 ucStatus  = Entry.pMessage;
+		u8 ucChannel = ucStatus & 0x0F;
+		u8 ucType    = ucStatus >> 4;
 
-	
 
-
-		delete [] Entry.pMessage;
-	}
-
-	if (!bPlugAndPlayUpdated)
-	{
-		return;
-	}
-
-	//if (m_pMIDIDevice == 0)
-	//{
+		// Perform any MiniDexed level MIDI handling before specific Tone Generators	
+	if(ucType==MIDI_CONTROL_CHANGE){
 		printf("#################################Registering\n");
 		m_pMIDIDevice =
 			(CUSBMIDIDevice *) CDeviceNameService::Get ()->GetDevice (m_DeviceName, FALSE);
@@ -93,7 +82,41 @@ void CMIDIKeyboard::Process (boolean bPlugAndPlayUpdated)
 
 			m_pMIDIDevice->RegisterRemovedHandler (DeviceRemovedHandler, this);
 		}
-	//}
+
+	}else{
+		if (m_pMIDIDevice)
+		{
+			m_pMIDIDevice->SendPlainMIDI (Entry.nCable, Entry.pMessage, Entry.nLength);
+		}
+
+
+	}
+
+	
+
+
+		delete [] Entry.pMessage;
+	}
+
+	if (!bPlugAndPlayUpdated|)
+	{
+		return;
+	}
+
+	if (m_pMIDIDevice == 0)
+	{
+		printf("#################################Registering\n");
+		m_pMIDIDevice =
+			(CUSBMIDIDevice *) CDeviceNameService::Get ()->GetDevice (m_DeviceName, FALSE);
+		if (m_pMIDIDevice != 0)
+		{
+			printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1Success#################################Registering\n");
+			assert (m_nInstance < MaxInstances);
+			m_pMIDIDevice->RegisterPacketHandler (s_pMIDIPacketHandler[m_nInstance]);
+
+			m_pMIDIDevice->RegisterRemovedHandler (DeviceRemovedHandler, this);
+		}
+	}
 
 
 	
@@ -115,6 +138,22 @@ void CMIDIKeyboard::MIDIPacketHandler0 (unsigned nCable, u8 *pPacket, unsigned n
 {
 	assert (s_pThis[0] != 0);
 	printf ("MIDIPacketHandler0: cable:%u pPack[0]: %02X pPadk[1]: %02X\n", nCable,	(unsigned) pPacket[0], (unsigned) pPacket[1]);
+
+	//Somthing for the plug and play to do make itself useful.
+	u8 ucStatus  = pPacket[0];
+	u8 ucChannel = ucStatus & 0x0F;
+	u8 ucType    = ucStatus >> 4;
+
+
+		// Perform any MiniDexed level MIDI handling before specific Tone Generators
+		
+			
+	if(ucType==MIDI_CONTROL_CHANGE){
+		printf("Putting a message in the queue to reset MIDI_CONTROL_CHANGE@@@@@@@@");
+		Send(pPacket,nLength,nCable);
+
+	}
+
 	
 	//If this is the buttons then 
 		

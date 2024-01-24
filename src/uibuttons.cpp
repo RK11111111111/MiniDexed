@@ -473,7 +473,7 @@ void CUIButtons::Update (void)
 	for (unsigned i=0; i<MAX_BUTTONS; i++) {
 		CUIButton::BtnEvent event = m_buttons[i].Read();
 		if (event != CUIButton::BtnEventNone) {
-			LOGDBG("Event: %u", event);
+			printf("Event: %u", event);
 			(*m_eventHandler) (event, m_eventParam);
 		}
 	}

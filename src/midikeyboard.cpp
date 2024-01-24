@@ -64,37 +64,6 @@ void CMIDIKeyboard::Process (boolean bPlugAndPlayUpdated)
 
 		
 		
-		u8 ucStatus  = Entry.pMessage[0];
-		u8 ucChannel = ucStatus & 0x0F;
-		u8 ucType    = ucStatus >> 4;
-
-
-		// Perform any MiniDexed level MIDI handling before specific Tone Generators	
-	if(ucType==0b1011){
-		printf("#################################Registering\n");
-		//m_pMIDIDevice->DeviceRemovedHandler(this)
-		m_pMIDIDevice =
-			(CUSBMIDIDevice *) CDeviceNameService::Get ()->GetDevice (m_DeviceName, FALSE);
-
-		if (m_pMIDIDevice != 0)
-		{
-			printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1Success#################################Registering\n");
-			assert (m_nInstance < MaxInstances);
-			//m_pMIDIDevice->RegisterPacketHandler (s_pMIDIPacketHandler[m_nInstance]);
-
-			//m_pMIDIDevice->RegisterRemovedHandler (DeviceRemovedHandler, this);
-		}
-
-	}else{
-		if (m_pMIDIDevice)
-		{
-			printf("Sending MIdi")
-			m_pMIDIDevice->SendPlainMIDI (Entry.nCable, Entry.pMessage, Entry.nLength);
-		}
-
-
-	}
-
 	
 
 
@@ -147,13 +116,16 @@ void CMIDIKeyboard::MIDIPacketHandler0 (unsigned nCable, u8 *pPacket, unsigned n
 	u8 ucChannel = ucStatus & 0x0F;
 	u8 ucType    = ucStatus >> 4;
 
-
+//m_pMIDIDevice =(CUSBMIDIDevice *) CDeviceNameService::Get ()->GetDevice (m_DeviceName, FALSE);
+	printf ("MIDIDevice: cable:%s  \n",s_pThis[1]->m_DeviceName);
 		// Perform any MiniDexed level MIDI handling before specific Tone Generators
 		
 			
 	if(ucType==0b1011){
 		printf("Putting a message in the queue to reset MIDI_CONTROL_CHANGE@@@@@@@@");
-		s_pThis[0]->Send(pPacket,nLength,nCable);
+
+
+		//s_pThis[0]->Send(pPacket,nLength,nCable);
 
 	}
 
@@ -171,6 +143,8 @@ void CMIDIKeyboard::MIDIPacketHandler1 (unsigned nCable, u8 *pPacket, unsigned n
 {
 	assert (s_pThis[1] != 0);
 	printf ("MIDIPacketHandler1: cable:%u pPack[0]: %02X pPadk[1]: %02X\n", nCable,	(unsigned) pPacket[0], (unsigned) pPacket[1]);
+
+#
 	s_pThis[1]->MIDIMessageHandler (pPacket, nLength, nCable);
 }
 

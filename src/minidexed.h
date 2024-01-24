@@ -277,8 +277,8 @@ private:
 	CPerformanceConfig m_PerformanceConfig;
 
 	CMIDIKeyboard *m_pMIDIKeyboard[CConfig::MaxUSBMIDIDevices];
-	CPCKeyboard m_PCKeyboard;
-	CSerialMIDIDevice m_SerialMIDI;
+	//CPCKeyboard m_PCKeyboard;
+	//CSerialMIDIDevice m_SerialMIDI;
 	bool m_bUseSerial;
 
 	CSoundBaseDevice *m_pSoundDevice;

@@ -48,7 +48,7 @@ void CMIDIPin::Write (unsigned nValue)
 	printf("\n*** write: pin: %u val: %u ", m_nPinNumber,nValue);
 	if (nValue >= 64) {
 		// "on"
-		m_nValue = LOW;
+		//m_nValue = LOW;
 	} else {
 		// "off"
 		m_nValue = HIGH;

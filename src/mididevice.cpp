@@ -193,8 +193,7 @@ void CMIDIDevice::MIDIMessageHandler (const u8 *pMessage, size_t nLength, unsign
 		{
 		case MIDI_CONTROL_CHANGE:
 			printf("MIDI_CONTROL_CHANGE");
-			//trap these 
-			return ;
+		
 
 		case MIDI_NOTE_OFF:
 		case MIDI_NOTE_ON:
@@ -291,6 +290,7 @@ void CMIDIDevice::MIDIMessageHandler (const u8 *pMessage, size_t nLength, unsign
 						break;
 							
 					case MIDI_CONTROL_CHANGE:
+						break;
 						if (nLength < 3)
 						{
 							break;

@@ -366,6 +366,7 @@ void CUIMenu::EventHandler (TMenuEvent Event)
 	switch (Event)
 	{
 	case MenuEventBack:				// pop menu
+		printf("-------------RK Back-------------------------");
 		if (m_nCurrentMenuDepth)
 		{
 			m_nCurrentMenuDepth--;
@@ -431,7 +432,7 @@ void CUIMenu::MenuHandler (CUIMenu *pUIMenu, TMenuEvent Event)
 		break;
 
 	case MenuEventSelect:				// push menu
-		LOGDBG("RK 1");
+		printf("-------------RK Select-------------------------");
 		assert (pUIMenu->m_nCurrentMenuDepth < MaxMenuDepth);
 		pUIMenu->m_MenuStackParent[pUIMenu->m_nCurrentMenuDepth] = pUIMenu->m_pParentMenu;
 		pUIMenu->m_MenuStackMenu[pUIMenu->m_nCurrentMenuDepth] = pUIMenu->m_pCurrentMenu;
@@ -453,7 +454,7 @@ void CUIMenu::MenuHandler (CUIMenu *pUIMenu, TMenuEvent Event)
 		break;
 
 	case MenuEventStepDown:
-		LOGDBG("RK 2");
+		printf("-------------RK StepDown-------------------------");
 		if (pUIMenu->m_nCurrentSelection > 0)
 		{
 			pUIMenu->m_nCurrentSelection--;

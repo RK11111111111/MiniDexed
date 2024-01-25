@@ -20,6 +20,7 @@
 #include "midipin.h"
 #include <circle/logger.h>
 #include <assert.h>
+#include <stdio.h>
 
 LOGMODULE ("midipin");
 

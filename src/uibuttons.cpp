@@ -22,6 +22,7 @@
 #include <assert.h>
 #include <circle/timer.h>
 #include <string.h>
+#include <stdio.h>
 
 LOGMODULE ("uibuttons");
 
@@ -213,7 +214,7 @@ void CUIButton::Write (unsigned nValue) {
 	// This only makes sense for MIDI buttons.
 	if (m_midipin && isMidiPin(m_pinNumber))
 	{
-		printf("\n*** write: pin: %u val: %u ", m_nPinNumber,nValue);
+		printf("\n*** write: pin: %u val: %u ", m_pinNumber,nValue);
 		// Update the "MIDI Pin"
 		m_midipin->Write(nValue);
 	}

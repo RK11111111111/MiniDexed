@@ -323,10 +323,12 @@ void CUserInterface::UIButtonsEventHandler (CUIButton::BtnEvent Event)
 		break;
 
 	case CUIButton::BtnEventBack:
+	    printf("CUIButton::BtnEventBack");
 		m_Menu.EventHandler (CUIMenu::MenuEventBack);
 		break;
 
 	case CUIButton::BtnEventSelect:
+		printf("CUIButton::BtnEventSelect");
 		m_Menu.EventHandler (CUIMenu::MenuEventSelect);
 		break;
 

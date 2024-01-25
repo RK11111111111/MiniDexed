@@ -111,26 +111,7 @@ void CMIDIKeyboard::MIDIPacketHandler0 (unsigned nCable, u8 *pPacket, unsigned n
 	assert (s_pThis[0] != 0);
 	printf ("MIDIPacketHandler0: cable:%u pPack[0]: %02X pPadk[1]: %02X\n", nCable,	(unsigned) pPacket[0], (unsigned) pPacket[1]);
 
-	//Somthing for the plug and play to do make itself useful.
-	u8 ucStatus  = pPacket[0];
-	u8 ucChannel = ucStatus & 0x0F;
-	u8 ucType    = ucStatus >> 4;
-
-//m_pMIDIDevice =(CUSBMIDIDevice *) CDeviceNameService::Get ()->GetDevice (m_DeviceName, FALSE);
-
-	if(ucType==0b1011){
-		printf("Putting a message in the queue to reset MIDI_CONTROL_CHANGE@@@@@@@@");
-
-
-		//s_pThis[0]->Send(pPacket,nLength,nCable);
-
-	}
-
-	
-	//If this is the buttons then 
-		
-	
-	//s_pThis[0]->MIDIMessageHandler (pPacket, nLength, nCable);
+	s_pThis[0]->MIDIMessageHandler (pPacket, nLength, nCable);
 	
 
 	
@@ -141,7 +122,7 @@ void CMIDIKeyboard::MIDIPacketHandler1 (unsigned nCable, u8 *pPacket, unsigned n
 	assert (s_pThis[1] != 0);
 	printf ("MIDIPacketHandler1: cable:%u pPack[0]: %02X pPadk[1]: %02X\n", nCable,	(unsigned) pPacket[0], (unsigned) pPacket[1]);
 
-#
+
 	s_pThis[1]->MIDIMessageHandler (pPacket, nLength, nCable);
 }
 

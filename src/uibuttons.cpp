@@ -415,7 +415,7 @@ boolean CUIButtons::Initialize (void)
 	// All of the buttons are now initialised, they just need to have their
 	// events assigned to them
 	
-	for (unsigned i=0; i<MAX_BUTTONS; i++) {
+	for (unsigned i=MAX_GPIO_BUTTONS; i<MAX_GPIO_BUTTONS+4; i++) {
 		bindButton(pins[i], triggers[i], events[i]);
 	}
 

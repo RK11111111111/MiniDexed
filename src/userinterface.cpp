@@ -361,7 +361,7 @@ void CUserInterface::UIButtonsEventStub (CUIButton::BtnEvent Event, void *pParam
 {
 	CUserInterface *pThis = static_cast<CUserInterface *> (pParam);
 	assert (pThis != 0);
-
+	printf("UIButtonsEventStub \n");
 	pThis->UIButtonsEventHandler (Event);
 }
 
@@ -380,6 +380,7 @@ void CUserInterface::UIMIDICmdHandler (unsigned nMidiCh, unsigned nMidiCmd, unsi
 	
 	if (m_pUIButtons)
 	{
+		printf("BtnMIDICmdHandler \n");
 		m_pUIButtons->BtnMIDICmdHandler (nMidiCmd, nMidiData1, nMidiData2);
 	}
 }

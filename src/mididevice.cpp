@@ -95,7 +95,7 @@ void CMIDIDevice::MIDIMessageHandler (const u8 *pMessage, size_t nLength, unsign
 {
 	// The packet contents are just normal MIDI data - see
 	// https://www.midi.org/specifications/item/table-1-summary-of-midi-message
-		printf("\nDevice Name ~~~~~~~~~~~~~~~~~~~ \n ")
+		printf("\nDevice Name ~~~~~~~~~~~~~~~~~~~ \n ");
 	printf ("%s-%u\n", m_DeviceName->c_str(), pMessage[0]);
 
 	if (m_pConfig->GetMIDIDumpEnabled ())

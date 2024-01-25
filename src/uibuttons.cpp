@@ -519,7 +519,7 @@ void CUIButtons::BtnMIDICmdHandler (unsigned nMidiCmd, unsigned nMidiData1, unsi
 		if (nMidiCmd == 0xB0) {  // Control Message
 			unsigned midiPin = ccToMidiPin(nMidiData1);
 			for (unsigned i=0; i<MAX_BUTTONS; i++) {
-				printf("Btn i: %x Pin %x)\n", i, midiPin);
+				//printf("Btn i: %x Pin %x)\n", i, midiPin);
 				if (m_buttons[i].getPinNumber() == midiPin) {
 					printf("==Btn i: %x Pin %x)\n", i, midiPin);
 					m_buttons[i].Write (nMidiData2);

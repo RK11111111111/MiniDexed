@@ -213,12 +213,14 @@ void CUIButton::Write (unsigned nValue) {
 	// This only makes sense for MIDI buttons.
 	if (m_midipin && isMidiPin(m_pinNumber))
 	{
+		printf("\n*** write: pin: %u val: %u ", m_nPinNumber,nValue);
 		// Update the "MIDI Pin"
 		m_midipin->Write(nValue);
 	}
 }
 
 CUIButton::BtnEvent CUIButton::Read (void) {
+	printf("trigger/n");
 	BtnTrigger trigger = ReadTrigger();
 
 	if (trigger == BtnTriggerClick) {
@@ -473,7 +475,7 @@ void CUIButtons::Update (void)
 	for (unsigned i=0; i<MAX_BUTTONS; i++) {
 		CUIButton::BtnEvent event = m_buttons[i].Read();
 		if (event != CUIButton::BtnEventNone) {
-			printf("Event: %u", event);
+			printf("Event: %u\n", event);
 			(*m_eventHandler) (event, m_eventParam);
 		}
 	}

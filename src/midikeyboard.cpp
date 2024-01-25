@@ -44,6 +44,8 @@ CMIDIKeyboard::CMIDIKeyboard (CMiniDexed *pSynthesizer, CConfig *pConfig, CUserI
 	s_pThis[m_nInstance] = this;
 
 	m_DeviceName.Format ("umidi%u", nInstance+1);
+
+	printf("\n##########################New device:\n%s\n ",m_DeviceName.c_str()); 
 	AddDevice (m_DeviceName);
 }
 

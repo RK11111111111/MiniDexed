@@ -35,6 +35,7 @@ CMIDIPin::~CMIDIPin (void)
 		
 unsigned CMIDIPin::Read (void)
 {
+	printf("\n*** read: pin: %u val: %u ", m_nPinNumber,nValue);
 	return m_nValue;
 }
 
@@ -43,6 +44,7 @@ void CMIDIPin::Write (unsigned nValue)
 	// Takes values in the MIDI controller range 0 to 127
 	// and OFF < 64 < ON.
 	// Simulates a PULLUP IO pin, so "true" is LOW (0)
+	printf("\n*** write: pin: %u val: %u ", m_nPinNumber,nValue);
 	if (nValue >= 64) {
 		// "on"
 		m_nValue = LOW;

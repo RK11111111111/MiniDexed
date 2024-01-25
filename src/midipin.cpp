@@ -36,7 +36,7 @@ CMIDIPin::~CMIDIPin (void)
 		
 unsigned CMIDIPin::Read (void)
 {
-	printf("\n*** read: pin: %u val: %u ", m_nPinNumber,nValue);
+	printf("\n*** read: pin: %u val: %u ", m_nPinNumber,m_nValue);
 	return m_nValue;
 }
 

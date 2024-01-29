@@ -82,6 +82,8 @@ private:
 	CKY040 *m_pRotaryEncoder;
 	bool m_bSwitchPressed;
 
+public:
+
 	CUIMenu m_Menu;
 };
 

@@ -137,7 +137,9 @@ private:
 	const TMenuItem *m_MenuStackParent[MaxMenuDepth];
 	const TMenuItem *m_MenuStackMenu[MaxMenuDepth];
 	unsigned m_nMenuStackItem[MaxMenuDepth];
+public:
 	unsigned m_nMenuStackSelection[MaxMenuDepth];
+private:
 	unsigned m_nMenuStackParameter[MaxMenuDepth];
 	unsigned m_nCurrentMenuDepth;
 

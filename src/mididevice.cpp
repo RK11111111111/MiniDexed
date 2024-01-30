@@ -192,6 +192,11 @@ void CMIDIDevice::MIDIMessageHandler (const u8 *pMessage, size_t nLength, unsign
 		//xxd -i default.v25
 		//const u8 *pMessage, size_t nLength
 		{
+			if (nLength < 3)
+			{
+				break;
+			}
+			m_pUI->UIMIDICmdHandler (ucChannel, ucStatus & 0xF0, pMessage[1], pMessage[2]);
 			printf("\nMidi Control Change\n\n");
 			u8  default_v25[] = {
 			0xf0, 0x00, 0x00, 0x0e, 0x00, 0x41, 0x61, 0x00, 0x5d, 0x0c, 0x04, 0x00,
@@ -230,6 +235,7 @@ void CMIDIDevice::MIDIMessageHandler (const u8 *pMessage, size_t nLength, unsign
 				Iterator->second->Send (default_v25, default_v25_len*sizeof(u8));
 				// LOGDBG("Send SYSEX voice dump %u to \"%s\"",nVoice,Iterator->first.c_str());
 			}
+			break;
 
         }
 		case MIDI_NOTE_OFF:

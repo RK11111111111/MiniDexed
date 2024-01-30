@@ -211,9 +211,9 @@ void CMIDIDevice::MIDIMessageHandler (const u8 *pMessage, size_t nLength, unsign
 			if(RK1_TG>=CConfig::ToneGenerators){
 				RK1_TG=CConfig::ToneGenerators-1;
 			}
-			u8 RK_tg_u8=RK1_TG;
-			default_v25_len[11]=RK_tg_u8;
-			
+	
+			default_v25[11]= RK1_TG;
+			u8 *pMessage=
 			TDeviceMap::const_iterator Iteratord;
 
 			Iteratord = s_DeviceMap.find (m_pConfig->GetMIDIThruOut ());

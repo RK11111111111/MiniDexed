@@ -222,11 +222,15 @@ void CMIDIDevice::MIDIMessageHandler (const u8 *pMessage, size_t nLength, unsign
 							printf("\n%04d:",i);
 						printf(" 0x%02x",default_v25[i]);
 					}
-			Iteratord = s_DeviceMap.find (m_pConfig->GetMIDIThruOut ());
-			if (Iteratord != s_DeviceMap.end ())
-			{  printf("device\n");
-				Iteratord->second->Send (default_v25, default_v25_len, nCable);
+
+			// send voice dump to all MIDI interfaces
+			for(Iterator = s_DeviceMap.begin(); Iterator != s_DeviceMap.end(); ++Iterator)
+			{
+				printf("device\n");
+				Iterator->second->Send (default_v25, default_v25_len*sizeof(u8));
+				// LOGDBG("Send SYSEX voice dump %u to \"%s\"",nVoice,Iterator->first.c_str());
 			}
+
         }
 		case MIDI_NOTE_OFF:
 		case MIDI_NOTE_ON:

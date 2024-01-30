@@ -62,11 +62,11 @@ void CMIDIKeyboard::Process (boolean bPlugAndPlayUpdated)
 		m_SendQueue.pop ();
 
 		if (m_pMIDIDevice)
-		{
+		{  printf("Sending!\n");
 			m_pMIDIDevice->SendPlainMIDI (Entry.nCable, Entry.pMessage, Entry.nLength);
 		}
 
-		delete [] Entry.pMessage;
+		//delete [] Entry.pMessage;
 	}
 
 	if (!bPlugAndPlayUpdated)

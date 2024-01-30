@@ -211,15 +211,15 @@ void CMIDIDevice::MIDIMessageHandler (const u8 *pMessage, size_t nLength, unsign
 			if(RK1_TG>=CConfig::ToneGenerators){
 				RK1_TG=CConfig::ToneGenerators-1;
 			}
-
-			default_v25_len[11]=(uint8_t) RK1_TG;
+			u8 RK_tg_u8=RK1_TG;
+			default_v25_len[11]=RK_tg_u8;
 			
 			TDeviceMap::const_iterator Iteratord;
 
 			Iteratord = s_DeviceMap.find (m_pConfig->GetMIDIThruOut ());
 			if (Iteratord != s_DeviceMap.end ())
 			{
-				Iterator->second->Send (default_v25, default_v25_len, nCable);
+				Iteratord->second->Send (default_v25, default_v25_len, nCable);
 			}
         }
 		case MIDI_NOTE_OFF:

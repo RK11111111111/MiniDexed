@@ -190,7 +190,9 @@ void CMIDIDevice::MIDIMessageHandler (const u8 *pMessage, size_t nLength, unsign
 		// send sysex to alesis to configure controller to match
 		// byte index 11 needs to change depending on the tone generator
 		//xxd -i default.v25
-			unsigned char default_v25[] = {
+		//const u8 *pMessage, size_t nLength
+		{
+			u8  default_v25[] = {
 			0xf0, 0x00, 0x00, 0x0e, 0x00, 0x41, 0x61, 0x00, 0x5d, 0x0c, 0x04, 0x00,
 			0x03, 0x00, 0x00, 0x01, 0x00, 0x7f, 0x40, 0x00, 0x7f, 0x00, 0x00, 0x47,
 			0x00, 0x7f, 0x00, 0x00, 0x4a, 0x00, 0x7f, 0x00, 0x00, 0x5e, 0x00, 0x7f,
@@ -201,24 +203,25 @@ void CMIDIDevice::MIDIMessageHandler (const u8 *pMessage, size_t nLength, unsign
 			0x7f, 0x00, 0x08, 0x01, 0x31, 0x7f, 0x00, 0x08, 0x01, 0x32, 0x7f, 0x00,
 			0x08, 0x01, 0x33, 0x7f, 0x00, 0x08, 0xf7
 			};
-
+           
+           
 			unsigned int default_v25_len = 103;
 
-			unsigned RK1_TG= m_pUI->m_Menu->m_nMenuStackSelection[0];
+			unsigned int RK1_TG= m_pUI->m_Menu.m_nMenuStackSelection[0];
 			if(RK1_TG>=CConfig::ToneGenerators){
 				RK1_TG=CConfig::ToneGenerators-1;
 			}
 
-			default_v25_len[11]=(unsigned char) RK1_TG;
+			default_v25_len[11]=(uint8_t) RK1_TG;
 			
-			TDeviceMap::const_iterator Iterator;
+			TDeviceMap::const_iterator Iteratord;
 
-			Iterator = s_DeviceMap.find (m_pConfig->GetMIDIThruOut ());
-			if (Iterator != s_DeviceMap.end ())
+			Iteratord = s_DeviceMap.find (m_pConfig->GetMIDIThruOut ());
+			if (Iteratord != s_DeviceMap.end ())
 			{
-				Iterator->second->Send (pMessage, default_v25_len, nCable);
+				Iterator->second->Send (default_v25, default_v25_len, nCable);
 			}
-
+        }
 		case MIDI_NOTE_OFF:
 		case MIDI_NOTE_ON:
 			if (nLength < 3)

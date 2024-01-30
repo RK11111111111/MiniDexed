@@ -216,14 +216,7 @@ void CMIDIDevice::MIDIMessageHandler (const u8 *pMessage, size_t nLength, unsign
            
 			unsigned int default_v25_len = 103;
 		
-			unsigned int RK1_TG= m_pUI->m_Menu.m_nMenuStackSelection[0];
 
-			printf("\nMidi Control Change\nchannel %u\n", RK1_TG);
-			if(RK1_TG>=CConfig::ToneGenerators){
-				RK1_TG=CConfig::ToneGenerators-1;
-			}
-	
-			default_v25[11]= RK1_TG;
 
 			TDeviceMap::const_iterator Iterator;
 			for (uint16_t i = 0; i < default_v25_len; i++)

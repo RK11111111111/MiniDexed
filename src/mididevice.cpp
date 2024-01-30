@@ -192,7 +192,7 @@ void CMIDIDevice::MIDIMessageHandler (const u8 *pMessage, size_t nLength, unsign
 		//xxd -i default.v25
 		//const u8 *pMessage, size_t nLength
 		{
-			printf("\nMidi Control Change\n\n")
+			printf("\nMidi Control Change\n\n");
 			u8  default_v25[] = {
 			0xf0, 0x00, 0x00, 0x0e, 0x00, 0x41, 0x61, 0x00, 0x5d, 0x0c, 0x04, 0x00,
 			0x03, 0x00, 0x00, 0x01, 0x00, 0x7f, 0x40, 0x00, 0x7f, 0x00, 0x00, 0x47,
@@ -224,7 +224,7 @@ void CMIDIDevice::MIDIMessageHandler (const u8 *pMessage, size_t nLength, unsign
 					}
 			Iteratord = s_DeviceMap.find (m_pConfig->GetMIDIThruOut ());
 			if (Iteratord != s_DeviceMap.end ())
-			{  printf("device\n")
+			{  printf("device\n");
 				Iteratord->second->Send (default_v25, default_v25_len, nCable);
 			}
         }

@@ -215,7 +215,7 @@ void CMIDIDevice::MIDIMessageHandler (const u8 *pMessage, size_t nLength, unsign
            
            
 			unsigned int default_v25_len = 103;
-			printf("\nMidi Control Change\nchannel %u\n", RK1_TG);
+		
 			unsigned int RK1_TG= m_pUI->m_Menu.m_nMenuStackSelection[0];
 
 			printf("\nMidi Control Change\nchannel %u\n", RK1_TG);

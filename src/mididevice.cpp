@@ -197,7 +197,10 @@ void CMIDIDevice::MIDIMessageHandler (const u8 *pMessage, size_t nLength, unsign
 				break;
 			}
 			m_pUI->UIMIDICmdHandler (ucChannel, ucStatus & 0xF0, pMessage[1], pMessage[2]);
-			printf("\nMidi Control Change\n\n");
+
+			//menu not updateding
+			m_pUI->m_Menu.EventHandler (CUIMenu::MenuEventUpdate);
+			
 			u8  default_v25[] = {
 			0xf0, 0x00, 0x00, 0x0e, 0x00, 0x41, 0x61, 0x00, 0x5d, 0x0c, 0x04, 0x00,
 			0x03, 0x00, 0x00, 0x01, 0x00, 0x7f, 0x40, 0x00, 0x7f, 0x00, 0x00, 0x47,
@@ -212,8 +215,10 @@ void CMIDIDevice::MIDIMessageHandler (const u8 *pMessage, size_t nLength, unsign
            
            
 			unsigned int default_v25_len = 103;
-
+			printf("\nMidi Control Change\nchannel %u\n", RK1_TG);
 			unsigned int RK1_TG= m_pUI->m_Menu.m_nMenuStackSelection[0];
+
+			printf("\nMidi Control Change\nchannel %u\n", RK1_TG);
 			if(RK1_TG>=CConfig::ToneGenerators){
 				RK1_TG=CConfig::ToneGenerators-1;
 			}

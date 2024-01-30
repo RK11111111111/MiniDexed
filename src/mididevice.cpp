@@ -213,7 +213,7 @@ void CMIDIDevice::MIDIMessageHandler (const u8 *pMessage, size_t nLength, unsign
 			}
 	
 			default_v25[11]= RK1_TG;
-			u8 *pMessage=
+
 			TDeviceMap::const_iterator Iteratord;
 
 			Iteratord = s_DeviceMap.find (m_pConfig->GetMIDIThruOut ());

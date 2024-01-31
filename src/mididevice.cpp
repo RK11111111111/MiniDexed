@@ -230,7 +230,7 @@ void CMIDIDevice::MIDIMessageHandler (const u8 *pMessage, size_t nLength, unsign
 				Iterator->second->Send (default_v25, default_v25_len*sizeof(u8));
 				// LOGDBG("Send SYSEX voice dump %u to \"%s\"",nVoice,Iterator->first.c_str());
 			}
-			break;
+	
 
         }
 		case MIDI_NOTE_OFF:

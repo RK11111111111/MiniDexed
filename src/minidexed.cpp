@@ -2464,6 +2464,11 @@ bool CMiniDexed::InitNetwork()
 				delete m_WLAN; m_WLAN = nullptr; // Clean up WLAN if allocated
 				return false; // Return false as network init failed
 			}
+			while (true) {
+				auto ip = m_pNet->GetConfig()->GetIPAddress()->Get();
+				if (ip != IP_ZERO && ip != {1,0,0,0}) break;
+				CTimer::Sleep(100);
+			}
 			// WPASupplicant needs to be started after netdevice available
 			if (NetDeviceType == NetDeviceTypeWLAN)
 			{

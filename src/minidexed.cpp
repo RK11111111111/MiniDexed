@@ -2457,7 +2457,7 @@ bool CMiniDexed::InitNetwork()
 					m_pConfig->GetNetworkHostname(),
 					NetDeviceType
 				);
-			if (!m_pNet || !m_pNet->Initialize(false)) // Check if m_pNet allocation succeeded
+			if (!m_pNet || !m_pNet->Initialize(true)) // Check if m_pNet allocation succeeded
 			{
 				LOGERR("CMiniDexed::InitNetwork: Failed to initialize network subsystem");
 				delete m_pNet; m_pNet = nullptr; // Clean up if failed

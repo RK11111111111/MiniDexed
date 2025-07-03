@@ -2464,12 +2464,24 @@ bool CMiniDexed::InitNetwork()
 				delete m_WLAN; m_WLAN = nullptr; // Clean up WLAN if allocated
 				return false; // Return false as network init failed
 			}
-			while (true)
-			{
+			// Re-check until desired IP is in place
+			const auto desiredIP = m_pConfig->GetNetworkIPAddress().Get(); // {192,168,2,103}
+			const auto maxRetries = 50;
+
+			for (unsigned i = 0; i < maxRetries; ++i) {
 				const CIPAddress* pIP = m_pNet->GetConfig()->GetIPAddress();
-				if (!pIP->IsNull())
-					break;  // valid static IP assigned
-				CTimer::SimpleMsDelay(100);
+				if (pIP && std::equal(pIP->Get(), pIP->Get() + 4, desiredIP)) {
+					LOGNOTE("Desired IP assigned: %s", pIP->Format().c_str());
+					break;
+				}
+				LOGNOTE("Current IP %s; retrying...", pIP ? pIP->Format().c_str() : "null");
+				CTimer::SimpleMsDelay(200);
+				
+				if (i + 1 == maxRetries) {
+					LOGERR("Static IP not set after retries; forcing re-init");
+					m_pNet->Initialize(true);
+					i = 0; // restart retry loop
+				}
 			}
 			// WPASupplicant needs to be started after netdevice available
 			if (NetDeviceType == NetDeviceTypeWLAN)

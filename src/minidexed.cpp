@@ -2446,17 +2446,26 @@ bool CMiniDexed::InitNetwork()
 		if (NetDeviceType != NetDeviceTypeUnknown)
 		{
 			LOGNOTE("CMiniDexed::InitNetwork: Creating CNetSubSystem");
-			if (m_pConfig->GetNetworkDHCP())
-				m_pNet = new CNetSubSystem(0, 0, 0, 0, m_pConfig->GetNetworkHostname(), NetDeviceType);
-			else
-				m_pNet = new CNetSubSystem(
-					m_pConfig->GetNetworkIPAddress().Get(),
-					m_pConfig->GetNetworkSubnetMask().Get(),
-					m_pConfig->GetNetworkDefaultGateway().Get(),
-					m_pConfig->GetNetworkDNSServer().Get(),
-					m_pConfig->GetNetworkHostname(),
-					NetDeviceType
-				);
+			if (m_pConfig->GetNetworkDHCP()) {
+				m_pNet = new CNetSubSystem(0, 0, 0, 0, hostname, NetDeviceType);
+			} else {
+				auto ipBytes = m_pConfig->GetNetworkIPAddress().Get();
+				auto maskBytes = m_pConfig->GetNetworkSubnetMask().Get();
+				auto gwBytes = m_pConfig->GetNetworkDefaultGateway().Get();
+				auto dnsBytes = m_pConfig->GetNetworkDNSServer().Get();
+			
+				// Instantiate with empty pointers initially
+				m_pNet = new CNetSubSystem(nullptr, nullptr, nullptr, nullptr, hostname, NetDeviceType);
+			
+				// Explicitly apply static IP afterward
+				auto cfg = m_pNet->GetConfig();
+				cfg->SetIPAddress(ipBytes);
+				cfg->SetNetMask(maskBytes);
+				cfg->SetGateway(gwBytes);
+				cfg->SetDNSServer(dnsBytes);
+			}
+			
+	 
 			if (!m_pNet || !m_pNet->Initialize(true)) // Check if m_pNet allocation succeeded
 			{
 				LOGERR("CMiniDexed::InitNetwork: Failed to initialize network subsystem");
@@ -2464,25 +2473,7 @@ bool CMiniDexed::InitNetwork()
 				delete m_WLAN; m_WLAN = nullptr; // Clean up WLAN if allocated
 				return false; // Return false as network init failed
 			}
-			// Re-check until desired IP is in place
-			const auto desiredIP = m_pConfig->GetNetworkIPAddress().Get(); // {192,168,2,103}
-			const auto maxRetries = 50;
-
-			for (unsigned i = 0; i < maxRetries; ++i) {
-				const CIPAddress* pIP = m_pNet->GetConfig()->GetIPAddress();
-				if (pIP && std::equal(pIP->Get(), pIP->Get() + 4, desiredIP)) {
-					//LOGNOTE("Desired IP assigned: %s", pIP->Format().c_str());
-					break;
-				}
-				//LOGNOTE("Current IP %s; retrying...", pIP ? pIP->Format().c_str() : "null");
-				CTimer::SimpleMsDelay(200);
-				
-				if (i + 1 == maxRetries) {
-					LOGERR("Static IP not set after retries; forcing re-init");
-					m_pNet->Initialize(true);
-					i = 0; // restart retry loop
-				}
-			}
+	
 			// WPASupplicant needs to be started after netdevice available
 			if (NetDeviceType == NetDeviceTypeWLAN)
 			{

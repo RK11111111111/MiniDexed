@@ -2455,8 +2455,8 @@ bool CMiniDexed::InitNetwork()
 				auto dnsBytes = m_pConfig->GetNetworkDNSServer().Get();
 			
 				// Instantiate with empty pointers initially
-				m_pNet = new CNetSubSystem(nullptr, nullptr, nullptr, nullptr, hostname, NetDeviceType);
-			
+				m_pNet = new CNetSubSystem(0, 0, 0, 0, m_pConfig->GetNetworkHostname(), NetDeviceType);
+
 				// Explicitly apply static IP afterward
 				auto cfg = m_pNet->GetConfig();
 				cfg->SetIPAddress(ipBytes);

@@ -2467,10 +2467,8 @@ bool CMiniDexed::InitNetwork()
 			while (true)
 			{
 				const CIPAddress* pIP = m_pNet->GetConfig()->GetIPAddress();
-				if (!pIP->IsNull() && !pIP->IsZero())
-				{
+				if (!pIP->IsNull())
 					break;  // valid static IP assigned
-				}
 				CTimer::SimpleMsDelay(100);
 			}
 			// WPASupplicant needs to be started after netdevice available

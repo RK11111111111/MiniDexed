@@ -2471,10 +2471,10 @@ bool CMiniDexed::InitNetwork()
 			for (unsigned i = 0; i < maxRetries; ++i) {
 				const CIPAddress* pIP = m_pNet->GetConfig()->GetIPAddress();
 				if (pIP && std::equal(pIP->Get(), pIP->Get() + 4, desiredIP)) {
-					LOGNOTE("Desired IP assigned: %s", pIP->Format().c_str());
+					//LOGNOTE("Desired IP assigned: %s", pIP->Format().c_str());
 					break;
 				}
-				LOGNOTE("Current IP %s; retrying...", pIP ? pIP->Format().c_str() : "null");
+				//LOGNOTE("Current IP %s; retrying...", pIP ? pIP->Format().c_str() : "null");
 				CTimer::SimpleMsDelay(200);
 				
 				if (i + 1 == maxRetries) {

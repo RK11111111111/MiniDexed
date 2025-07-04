@@ -2442,7 +2442,7 @@ bool CMiniDexed::InitNetwork()
         {
             LOGERR("InitNetwork: Static IP not applied, retrying init");
             delete m_pNet;
-            return InitNetworkStaticEthernet(); // restart setup
+            return InitNetwork(); // restart setup
         }
     }
 

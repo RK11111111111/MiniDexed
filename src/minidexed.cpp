@@ -2448,9 +2448,7 @@ bool CMiniDexed::InitNetwork()
 
     // 3. Record the device, then set up UDP MIDI
     m_pNetDevice = CNetDevice::GetNetDevice(NetDeviceTypeEthernet);
-    LOGNOTE("InitNetwork: Network interface up on %s",
-            (const char*)m_pNetDevice->GetMACAddress()->ToString().c_str());
-
+    
     m_UDPMIDI = new CUDPMIDIDevice(this, m_pConfig, &m_UI);
     if (!m_UDPMIDI)
     {

@@ -2405,115 +2405,65 @@ void CMiniDexed::UpdateNetwork()
 
 bool CMiniDexed::InitNetwork()
 {
-	LOGNOTE("CMiniDexed::InitNetwork called");
-	assert(m_pNet == nullptr);
+    LOGNOTE("InitNetwork: Starting static Ethernet setup");
 
-	TNetDeviceType NetDeviceType = NetDeviceTypeUnknown;
+    // Define your static IP config
+    u8 ip[4]      = {192, 168, 2, 103};
+    u8 netmask[4] = {255, 255, 255, 0};
+    u8 gw[4]      = {192, 168, 2, 100};
+    u8 dns[4]     = {8, 8, 8, 8};
 
-	if (m_pConfig->GetNetworkEnabled())
-	{
-		LOGNOTE("CMiniDexed::InitNetwork: Network is enabled in configuration");
+    // 1. Create and initialize the network subsystem
+    m_pNet = new CNetSubSystem(ip, netmask, gw, dns,
+                               m_pConfig->GetNetworkHostname(),
+                               NetDeviceTypeEthernet);
+    if (!m_pNet || !m_pNet->Initialize(true))
+    {
+        LOGERR("InitNetwork: CNetSubSystem initialization failed");
+        delete m_pNet;
+        m_pNet = nullptr;
+        return false;
+    }
 
-		LOGNOTE("CMiniDexed::InitNetwork: Network type set in configuration: %s", m_pConfig->GetNetworkType());
+    // 2. Validate the actual IP is set (retries for warm-start cases)
+    const u8 desiredIP[4] = {192, 168, 2, 103};
+    for (unsigned i = 0; i < 50; ++i)
+    {
+        const CIPAddress* pIP = m_pNet->GetConfig()->GetIPAddress();
+        if (pIP && std::equal(pIP->Get(), pIP->Get() + 4, desiredIP))
+        {
+            CString s;
+            pIP->Format(&s);
+            LOGNOTE("InitNetwork: Static IP confirmed — %s", (const char*)s);
+            break;
+        }
+        CTimer::SimpleMsDelay(100);
+        if (i == 49)
+        {
+            LOGERR("InitNetwork: Static IP not applied, retrying init");
+            delete m_pNet;
+            return InitNetworkStaticEthernet(); // restart setup
+        }
+    }
 
-		if (strcmp(m_pConfig->GetNetworkType(), "wlan") == 0)
-		{
-			LOGNOTE("CMiniDexed::InitNetwork: Initializing WLAN");
-			NetDeviceType = NetDeviceTypeWLAN;
-			m_WLAN = new CBcm4343Device(WLANFirmwarePath);
-			if (m_WLAN && m_WLAN->Initialize())
-			{
-				LOGNOTE("CMiniDexed::InitNetwork: WLAN initialized");
-			}
-			else
-			{
-				LOGERR("CMiniDexed::InitNetwork: Failed to initialize WLAN, maybe firmware files are missing?");
-				delete m_WLAN; m_WLAN = nullptr;
-				return false;
-			}
-		}
-		else if (strcmp(m_pConfig->GetNetworkType(), "ethernet") == 0)
-		{
-			LOGNOTE("CMiniDexed::InitNetwork: Initializing Ethernet");
-			NetDeviceType = NetDeviceTypeEthernet;
-		}
-		else 
-		{
-			LOGERR("CMiniDexed::InitNetwork: Network type is not set, please check your minidexed configuration file.");
-			NetDeviceType = NetDeviceTypeUnknown;
-		}
-		
-		if (NetDeviceType != NetDeviceTypeUnknown)
-		{
-			LOGNOTE("CMiniDexed::InitNetwork: Creating CNetSubSystem");
-			if (m_pConfig->GetNetworkDHCP())
-				m_pNet = new CNetSubSystem(0, 0, 0, 0, m_pConfig->GetNetworkHostname(), NetDeviceType);
-				else {
-					u8 ip[4]      = {192, 168, 2, 103};
-					u8 netmask[4] = {255, 255, 255, 0};
-					u8 gw[4]      = {192, 168, 2, 100};
-					u8 dns[4]     = {8, 8, 8, 8};
-					
-					CNetSubSystem net(ip, netmask, gw, dns, "MiniDexed", NetDeviceTypeEthernet);
-			 
-				}
-			if (!m_pNet || !m_pNet->Initialize(true)) // Check if m_pNet allocation succeeded
-			{
-				LOGERR("CMiniDexed::InitNetwork: Failed to initialize network subsystem");
-				delete m_pNet; m_pNet = nullptr; // Clean up if failed
-				delete m_WLAN; m_WLAN = nullptr; // Clean up WLAN if allocated
-				return false; // Return false as network init failed
-			}
-			// Re-check until desired IP is in place
-			const auto desiredIP = m_pConfig->GetNetworkIPAddress().Get(); // {192,168,2,103}
-			const auto maxRetries = 50;
+    // 3. Record the device, then set up UDP MIDI
+    m_pNetDevice = CNetDevice::GetNetDevice(NetDeviceTypeEthernet);
+    LOGNOTE("InitNetwork: Network interface up on %s",
+            (const char*)m_pNetDevice->GetMACAddress()->ToString().c_str());
 
-			for (unsigned i = 0; i < maxRetries; ++i) {
-				const CIPAddress* pIP = m_pNet->GetConfig()->GetIPAddress();
-				if (pIP && std::equal(pIP->Get(), pIP->Get() + 4, desiredIP)) {
-					//LOGNOTE("Desired IP assigned: %s", pIP->Format().c_str());
-					break;
-				}
-				//LOGNOTE("Current IP %s; retrying...", pIP ? pIP->Format().c_str() : "null");
-				CTimer::SimpleMsDelay(200);
-				
-				if (i + 1 == maxRetries) {
-					LOGERR("Static IP not set after retries; forcing re-init");
-					m_pNet->Initialize(true);
-					i = 0; // restart retry loop
-				}
-			}
-			// WPASupplicant needs to be started after netdevice available
-			if (NetDeviceType == NetDeviceTypeWLAN)
-			{
-				LOGNOTE("CMiniDexed::InitNetwork: Initializing WPASupplicant");
-				m_WPASupplicant = new CWPASupplicant(WLANConfigFile); // Allocate m_WPASupplicant
-				if (!m_WPASupplicant || !m_WPASupplicant->Initialize()) 
-				{
-					LOGERR("CMiniDexed::InitNetwork: Failed to initialize WPASupplicant, maybe wlan config is missing?"); 
-					delete m_WPASupplicant; m_WPASupplicant = nullptr; // Clean up if failed
-					// Continue without supplicant? Or return false? Decided to continue for now.
-				}
-			}
-			m_pNetDevice = CNetDevice::GetNetDevice(NetDeviceType);
+    m_UDPMIDI = new CUDPMIDIDevice(this, m_pConfig, &m_UI);
+    if (!m_UDPMIDI)
+    {
+        LOGERR("InitNetwork: UDP MIDI allocation failed");
+        delete m_pNet;
+        m_pNet = nullptr;
+        return false;
+    }
 
-			// Allocate UDP MIDI device now that network might be up
-			m_UDPMIDI = new CUDPMIDIDevice(this, m_pConfig, &m_UI); // Allocate m_UDPMIDI
-			if (!m_UDPMIDI) {
-				LOGERR("CMiniDexed::InitNetwork: Failed to allocate UDP MIDI device");
-				// Clean up other network resources if needed, or handle error appropriately
-			} else {
-				// Synchronize UDP MIDI channels with current assignments
-				for (unsigned nTG = 0; nTG < m_nToneGenerators; ++nTG)
-					m_UDPMIDI->SetChannel(m_nMIDIChannel[nTG], nTG);
-			}
-		}
-		LOGNOTE("CMiniDexed::InitNetwork: returning %d", m_pNet != nullptr);
-		return m_pNet != nullptr;
-	}
-	else
-	{
-		LOGNOTE("CMiniDexed::InitNetwork: Network is not enabled in configuration");
-		return false;
-	}
+    // Sync MIDI channels
+    for (unsigned tg = 0; tg < m_nToneGenerators; ++tg)
+        m_UDPMIDI->SetChannel(m_nMIDIChannel[tg], tg);
+
+    LOGNOTE("InitNetwork: static Ethernet initialization complete");
+    return true;
 }

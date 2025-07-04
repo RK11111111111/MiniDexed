@@ -2449,20 +2449,13 @@ bool CMiniDexed::InitNetwork()
 			if (m_pConfig->GetNetworkDHCP())
 				m_pNet = new CNetSubSystem(0, 0, 0, 0, m_pConfig->GetNetworkHostname(), NetDeviceType);
 				else {
-					auto ipBytes = m_pConfig->GetNetworkIPAddress().Get();
-					auto maskBytes = m_pConfig->GetNetworkSubnetMask().Get();
-					auto gwBytes = m_pConfig->GetNetworkDefaultGateway().Get();
-					auto dnsBytes = m_pConfig->GetNetworkDNSServer().Get();
-				
-					// Instantiate with empty pointers initially
-					m_pNet = new CNetSubSystem(0, 0, 0, 0, m_pConfig->GetNetworkHostname(), NetDeviceType);
-	
-					// Explicitly apply static IP afterward
-					auto cfg = m_pNet->GetConfig();
-					cfg->SetIPAddress(ipBytes);
-					cfg->SetNetMask(maskBytes);
-					cfg->SetGateway(gwBytes);
-					cfg->SetDNSServer(dnsBytes);
+					u8 ip[4]      = {192, 168, 2, 103};
+					u8 netmask[4] = {255, 255, 255, 0};
+					u8 gw[4]      = {192, 168, 2, 100};
+					u8 dns[4]     = {8, 8, 8, 8};
+					
+					CNetSubSystem net(ip, netmask, gw, dns, "MiniDexed", NetDeviceTypeEthernet);
+			 
 				}
 			if (!m_pNet || !m_pNet->Initialize(true)) // Check if m_pNet allocation succeeded
 			{
